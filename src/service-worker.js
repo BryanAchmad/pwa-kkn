@@ -11,7 +11,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst, NetworkFirst } from 'workbox-strategies';
 
 clientsClaim();
 
@@ -59,11 +59,10 @@ registerRoute(
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
-      //   new ExpirationPlugin({ maxEntries: 50 })
+      new ExpirationPlugin({ maxEntries: 50 })
     ]
   })
 );
-
 registerRoute(
   ({ url }) =>
     url.origin === 'https://fonts.googleapis.com' ||

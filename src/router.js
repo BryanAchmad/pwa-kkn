@@ -19,13 +19,13 @@ const Loader = (Component) => (props) =>
 
 // Dashboards
 
-const Tasks = Loader(lazy(() => import('src/content/dashboards/Tasks')));
+// const Tasks = Loader(lazy(() => import('src/content/dashboards/Tasks')));
 
 // Applications
 
-const Messenger = Loader(
-  lazy(() => import('src/content/applications/Messenger'))
-);
+// const Messenger = Loader(
+//   lazy(() => import('src/content/applications/Messenger'))
+// );
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
@@ -59,6 +59,27 @@ const Avatars = Loader(
 );
 const Cards = Loader(lazy(() => import('src/content/pages/Components/Cards')));
 const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
+
+const ProfilePage = Loader(
+  lazy(() => import('src/content/dashboards/Profile'))
+);
+
+const Kelompok = Loader(lazy(() => import('src/content/dashboards/Kelompok')));
+const ProgramKerja = Loader(
+  lazy(() => import('src/content/dashboards/ProgramKerja/Index'))
+);
+const DetailsProgramKerja = Loader(
+  lazy(() => import('src/content/dashboards/ProgramKerja/Details'))
+);
+const LaporanAkhir = Loader(
+  lazy(() => import('src/content/dashboards/Laporan/LaporanAkhir'))
+);
+const ProfilDesa = Loader(
+  lazy(() => import('src/content/dashboards/Laporan/ProfilDesa'))
+);
+const MediaPublikasi = Loader(
+  lazy(() => import('src/content/dashboards/Laporan/MediaPublikasi'))
+);
 
 // Status
 
@@ -125,18 +146,80 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <Tasks />
-      },
-      {
-        path: 'tasks',
-        element: <Navigate to="tasks" replace />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
+        element: <ProfilePage />
       }
     ]
   },
+  {
+    path: 'kelompok',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Kelompok />
+      }
+    ]
+  },
+  {
+    path: 'pembimbing',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Kelompok />
+      }
+    ]
+  },
+  {
+    path: 'program-kerja',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <ProgramKerja />
+      },
+      {
+        path: 'details',
+        element: <DetailsProgramKerja />
+      }
+    ]
+  },
+  {
+    path: 'laporan',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: 'laporan-akhir',
+        element: <LaporanAkhir />
+      },
+      {
+        path: 'profil-desa',
+        element: <ProfilDesa />
+      },
+      {
+        path: 'media-publikasi',
+        element: <MediaPublikasi />
+      }
+    ]
+  },
+  // {
+  //   path: '',
+  //   element: <SidebarLayout />,
+  //   children: [
+  //     {
+  //       path: '/',
+  //       element: <Tasks />
+  //     },
+  //     {
+  //       path: 'tasks',
+  //       element: <Navigate to="tasks" replace />
+  //     },
+  //     {
+  //       path: 'messenger',
+  //       element: <Messenger />
+  //     }
+  //   ]
+  // },
   {
     path: 'management',
     element: <SidebarLayout />,
