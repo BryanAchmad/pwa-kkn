@@ -6,6 +6,8 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import { CssBaseline } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
+// import SidebarLayout from './layouts/SidebarLayout';
+// import ProfilePage from 'src/content/dashboards/Profile';
 
 function App() {
   const content = useRoutes(router);

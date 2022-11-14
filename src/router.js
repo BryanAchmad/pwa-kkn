@@ -146,7 +146,11 @@ const routes = [
     children: [
       {
         path: '/',
-        element: <ProfilePage />
+        element: (
+          <>
+            <ProfilePage />
+          </>
+        )
       }
     ]
   },

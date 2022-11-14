@@ -27,13 +27,20 @@ function DetailsProgramKerja() {
   //   const [open, setOpen] = useState(false);
   //   const [loadingButton, setLoadingButton] = useState(false);
 
+  //   const { id } = useParams();
+  //   console.log(location.state);
   const location = useLocation();
   const { id } = location.state;
 
   const reload = () => {
     console.log('reload page parent');
     axios
-      .get(`http://localhost:8080/proker/details/${id}`)
+      .get(`http://localhost:8080/proker/details/${id}`, {
+        headers: {
+          'x-access-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
+        }
+      })
       .then((response) => {
         console.log('data', response.data.data);
         setProkers(response.data.data);
@@ -46,7 +53,12 @@ function DetailsProgramKerja() {
   useEffect(() => {
     const getData = () => {
       axios
-        .get(`http://localhost:8080/proker/details/${id}`)
+        .get(`http://localhost:8080/proker/details/${id}`, {
+          headers: {
+            'x-access-token':
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
+          }
+        })
         .then((response) => {
           console.log(response.data.data);
           setProkers(response.data.data);
