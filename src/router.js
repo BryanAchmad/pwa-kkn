@@ -81,6 +81,11 @@ const MediaPublikasi = Loader(
   lazy(() => import('src/content/dashboards/Laporan/MediaPublikasi'))
 );
 
+// Auth
+
+const LoginPage = Loader(lazy(() => import('src/content/auth/Login')));
+const RegisterPage = Loader(lazy(() => import('src/content/auth/Register')));
+
 // Status
 
 // const Status404 = Loader(
@@ -141,10 +146,12 @@ const routes = [
   //   ]
   // },
   {
-    path: 'login'
+    path: 'login',
+    element: <LoginPage />
   },
   {
-    path: 'register'
+    path: 'register',
+    element: <RegisterPage />
   },
   {
     path: '',
