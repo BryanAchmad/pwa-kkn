@@ -103,7 +103,7 @@ function ProgramKerja() {
 
   const getDataProker = () => {
     axios
-      .get(`http://localhost:8080/proker/${id}`, {
+      .get(`https://vast-sands-85280.herokuapp.com/proker/${id}`, {
         headers: {
           'x-access-token':
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MzRmMzU0MWJmZGI3Y2E4ZmJlODFlIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NTg2NDQ2LCJleHAiOjE2Njg2NzI4NDZ9.WTPLTg-ODro1Yv75-CyD8pbY0WTb3fGGqo2ao0f5cms'
