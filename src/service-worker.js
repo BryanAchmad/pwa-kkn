@@ -78,6 +78,21 @@ registerRoute(
   })
 );
 
+registerRoute(
+  ({ url }) =>
+    url.origin.includes('localhost:8080') ||
+    url.origin.includes('127.0.0.1:8080'),
+  new NetworkFirst({
+    cacheName: 'apiData',
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 360,
+        maxEntries: 30
+      })
+    ]
+  })
+);
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {

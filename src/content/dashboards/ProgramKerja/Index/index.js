@@ -50,6 +50,7 @@ const TabsWrapper = styled(Tabs)(
 );
 
 function ProgramKerja() {
+  const [token, setToken] = useState();
   const [prokers, setProkers] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [enableButton, setEnableButton] = useState(false);
@@ -61,7 +62,7 @@ function ProgramKerja() {
   });
   const [loadingButton, setLoadingButton] = useState(false);
   // let id = localStorage.getItem('idKelompok');
-  let id = '6371fbf11f1513f5cb27d656';
+  let id = '63734f0c41bfdb7ca8fbe819';
 
   const onClick = () => {
     setLoadingButton(true);
@@ -94,6 +95,9 @@ function ProgramKerja() {
     // console.log(dataProker);
   };
 
+  // const getToken = () => {
+
+  // };
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -102,7 +106,7 @@ function ProgramKerja() {
       .get(`http://localhost:8080/proker/${id}`, {
         headers: {
           'x-access-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MzRmMzU0MWJmZGI3Y2E4ZmJlODFlIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NTg2NDQ2LCJleHAiOjE2Njg2NzI4NDZ9.WTPLTg-ODro1Yv75-CyD8pbY0WTb3fGGqo2ao0f5cms'
         }
       })
       .then((response) => {
@@ -115,6 +119,8 @@ function ProgramKerja() {
   };
 
   useEffect(() => {
+    // const tokenAccess = sessionStorage.getItem('access_token');
+    // setToken(tokenAccess);
     getDataProker();
   }, []);
 
