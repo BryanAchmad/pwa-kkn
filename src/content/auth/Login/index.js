@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import axios from 'src/api/axios';
 import React, { useContext, useState } from 'react';
-=======
-import axios from 'axios';
-import React, { useState } from 'react';
->>>>>>> 4da7a3f0421f89c89fa23abc17b5d2f439375e26
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -17,18 +12,12 @@ import {
   IconButton
 } from '@mui/material';
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
-<<<<<<< HEAD
 import AuthContext from 'src/contexts/AuthProvider';
 
 const LOGIN_URL = '/login';
 
 const index = () => {
   const { setAuth } = useContext(AuthContext);
-
-=======
-
-const index = ({ setToken }) => {
->>>>>>> 4da7a3f0421f89c89fa23abc17b5d2f439375e26
   const [credentials, setCrendentials] = useState({
     nim: '',
     pic: '',
