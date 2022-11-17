@@ -123,7 +123,7 @@ function ProgramKerja() {
     // const tokenAccess = sessionStorage.getItem('access_token');
     // setToken(tokenAccess);
     getDataProker();
-  }, []);
+  }, [prokers]);
 
   const tabs = [
     { value: 'ekonomi', label: 'Ekonomi' },
