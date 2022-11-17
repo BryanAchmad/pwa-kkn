@@ -110,6 +110,7 @@ function ProgramKerja() {
         }
       })
       .then((response) => {
+        console.log('from client', new Date());
         console.log(response);
         setProkers(response.data.proker);
       })

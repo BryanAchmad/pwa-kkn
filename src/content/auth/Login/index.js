@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import axios from 'src/api/axios';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
@@ -12,8 +12,13 @@ import {
   IconButton
 } from '@mui/material';
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
+import AuthContext from 'src/contexts/AuthProvider';
 
-const index = ({ setToken }) => {
+const LOGIN_URL = '/login';
+
+const index = () => {
+  const { setAuth } = useContext(AuthContext);
+
   const [credentials, setCrendentials] = useState({
     nim: '',
     pic: '',
@@ -40,11 +45,19 @@ const index = ({ setToken }) => {
     // console.log(credentials);
     // axios.defaults.withCredentials = true;
     axios
-      .post('http://localhost:8080/login', credentials)
+      .post(LOGIN_URL, credentials, {
+        headers: { 'content-type': 'application/json' },
+        withCredentials: true
+      })
       .then((response) => {
         console.log(response);
+        const nim = response?.data?.nim;
+        const nama = response?.data?.idMahasiswa?.nama;
+        const kelompok = response?.data?.kelompok;
+        const access_token = response?.data?.access_token;
+        setAuth({ nim, nama, kelompok, access_token });
         // process.exit();
-        setToken(response.data?.data?.access_token);
+        // setToken(response.data?.data?.access_token);
       })
       .catch((e) => console.log(e));
   };
