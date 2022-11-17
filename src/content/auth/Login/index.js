@@ -53,8 +53,8 @@ const index = () => {
         const nim = response?.data?.nim;
         const nama = response?.data?.idMahasiswa?.nama;
         const kelompok = response?.data?.kelompok;
-        const access_token = response?.data?.access_token;
-        setAuth({ nim, nama, kelompok, access_token });
+        const token = response?.data?.access_token;
+        setAuth({ nim, nama, kelompok, token });
         // process.exit();
         // setToken(response.data?.data?.access_token);
       })
