@@ -27,6 +27,7 @@ import {
 
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import LoaderComponent from 'src/components/Loader';
 
 import KesehatanTab from './Divisi/KesehatanTab';
 import EkonomiTab from './Divisi/EkonomiTab';
@@ -50,6 +51,7 @@ const TabsWrapper = styled(Tabs)(
 );
 
 function ProgramKerja() {
+  const [spinner, setSpinner] = useState(false);
   // const [token, setToken] = useState();
   const [prokers, setProkers] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -102,6 +104,7 @@ function ProgramKerja() {
   const handleClose = () => setOpen(false);
 
   const getDataProker = () => {
+    setSpinner(true);
     axios
       .get(`https://vast-sands-85280.herokuapp.com/proker/${id}`, {
         headers: {
@@ -116,6 +119,9 @@ function ProgramKerja() {
       })
       .catch((e) => {
         console.log(e);
+      })
+      .finally(() => {
+        setSpinner(false);
       });
   };
 
@@ -257,10 +263,16 @@ function ProgramKerja() {
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'kesehatan' && <KesehatanTab data={kesehatan} />}
-            {currentTab === 'ekonomi' && <EkonomiTab data={ekonomi} />}
-            {/* {{currentTab === 'notifications' && <NotificationsTab />}
-                        {currentTab === 'security' && <SecurityTab />} */}
+            {!spinner ? (
+              <>
+                {currentTab === 'kesehatan' && (
+                  <KesehatanTab data={kesehatan} />
+                )}
+                {currentTab === 'ekonomi' && <EkonomiTab data={ekonomi} />}
+              </>
+            ) : (
+              <LoaderComponent />
+            )}
           </Grid>
         </Grid>
       </Container>
