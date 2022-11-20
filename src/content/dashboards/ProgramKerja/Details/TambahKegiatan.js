@@ -101,7 +101,7 @@ function TambahKegiatan({ reload, idProker }) {
     //   console.log(pair[0] + ', ' + pair[1]);
     // }
     axios
-      .post(`http://localhost:8080/kegiatan/${idProker}`, formData)
+      .post(`https://vast-sands-85280.herokuapp.com/kegiatan/${idProker}`, formData)
       .then((response) => {
         console.log('data', response);
         setIsOpen(false);

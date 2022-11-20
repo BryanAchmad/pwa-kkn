@@ -74,7 +74,7 @@ function ProgramKerja() {
   const sendData = () => {
     setEnableButton(true);
     axios
-      .post(`http://127.0.0.1:8080/proker/${id}`, dataProker)
+      .post(`https://vast-sands-85280.herokuapp.com/proker/${id}`, dataProker)
       .then((response) => {
         console.log(response);
         setEnableButton(false);

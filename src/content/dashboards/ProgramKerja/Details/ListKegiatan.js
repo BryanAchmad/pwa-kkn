@@ -24,7 +24,7 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 // import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 // import { Link } from 'react-router-dom';
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { DeleteOutline, EditOutlined } from '@mui/icons-material';
 
 function ListKegiatan({ data }) {
@@ -184,7 +184,7 @@ function ListKegiatan({ data }) {
                               {kegiatan.images.map((file, i) => (
                                 <ImageListItem key={i}>
                                   <img
-                                    src={`http://localhost:8080/${file.filePath}`}
+                                    src={`https://vast-sands-85280.herokuapp.com/${file.filePath}`}
                                     alt={file.fileName}
                                     loading="lazy"
                                   />

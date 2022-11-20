@@ -79,9 +79,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) =>
-    url.origin.includes('localhost:8080') ||
-    url.origin.includes('127.0.0.1:8080'),
+  ({ url }) => url.origin.includes('vast-sands-85280.herokuapp.com'),
   new NetworkFirst({
     cacheName: 'apiData',
     plugins: [
