@@ -10,7 +10,7 @@ const useProkerData = () => {
 
   const id = '63734f0c41bfdb7ca8fbe819';
   const kelompok = '10';
-  const user_id = '63734e7741bfdb7ca8fbe817';
+  const userId = '63734e7741bfdb7ca8fbe817';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +20,7 @@ const useProkerData = () => {
           axios.get(`/proker/${id}`),
           axios.get(`/divisi`),
           axios.get(`/media/${kelompok}`),
-          axios.get(`/mahasiswa/${user_id}`)
+          axios.get(`/mahasiswa/${userId}`)
         ])
       ).map((r) => r);
 
