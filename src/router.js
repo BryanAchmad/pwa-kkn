@@ -101,7 +101,7 @@ const RegisterPage = Loader(lazy(() => import('src/content/auth/Register')));
 //   lazy(() => import('src/content/pages/Status/Maintenance'))
 // );
 
-const routes = [
+const routes = (props) => [
   // {
   //   path: '',
   //   element: <BaseLayout />,
@@ -193,7 +193,7 @@ const routes = [
     children: [
       {
         path: '',
-        element: <ProgramKerja />
+        element: <ProgramKerja {...props} />
       },
       {
         path: 'details',

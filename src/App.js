@@ -4,8 +4,10 @@ import router from 'src/router';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import { CssBaseline } from '@mui/material';
+import { CircularProgress, CssBaseline, Box, Typography } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
+import useProkerData from './services/kelompok.service';
+// import { useEffect, useState } from 'react';
 // import { Suspense, lazy } from 'react';
 
 // import SuspenseLoader from 'src/components/SuspenseLoader';
@@ -20,8 +22,38 @@ import ThemeProvider from './theme/ThemeProvider';
 
 // import LoginPage from 'src/content/auth/Login';
 
+const LoadingScreen = () => {
+  console.log('loading');
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+    >
+      <CircularProgress />
+      <Typography>please wait until data already use 🔥</Typography>
+    </Box>
+  );
+};
+
 function App() {
-  const content = useRoutes(router);
+  // const [loading, setLoading] = useState(false);
+  const { proker, prokers, fetching } = useProkerData();
+  console.log('from app', prokers);
+  const content = useRoutes(router({ proker, prokers }));
+
+  // const handleStatus = () => {
+  //   if (proker === undefined && prokers === undefined) {
+  //     setLoading(true);
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // };
+  // useEffect(() => {
+
+  // }, [proker, prokers]);
 
   // const getToken = () => {
   //   const tokenString = sessionStorage.getItem('access_token');
@@ -39,12 +71,16 @@ function App() {
   // if (!token) return <LoginPage setToken={setToken} />;
 
   return (
-    
     <ThemeProvider>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <CssBaseline />
-        {content}
-      </LocalizationProvider>
+      {fetching ? (
+        <LoadingScreen />
+      ) : (
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <CssBaseline />
+          {content}
+          {/* {content} */}
+        </LocalizationProvider>
+      )}
     </ThemeProvider>
   );
 }

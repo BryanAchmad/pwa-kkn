@@ -43,7 +43,6 @@ function ListKegiatan({ data }) {
           titleTypographyProps={{ variant: 'h2' }}
           title="List Kegiatan"
         />
-        <Typography type="h3">List Kegiatan</Typography>
         <CardContent>
           <Box
             sx={{
@@ -56,7 +55,7 @@ function ListKegiatan({ data }) {
               dataKegiatan.map((kegiatan, index) => (
                 <Accordion
                   sx={{
-                    border: '1px solid #efefef'
+                    border: '1px solid #444444'
                   }}
                   key={index}
                 >
@@ -144,7 +143,11 @@ function ListKegiatan({ data }) {
                               margin: '0 0 16px 68px'
                             }}
                           >
-                            <Typography>{kegiatan.created_at}</Typography>
+                            <Typography>
+                              {new Date(
+                                kegiatan.tanggal_kegiatan
+                              ).toLocaleString()}
+                            </Typography>
                           </Paper>
                           <Divider variant="inset" sx={{ marginY: '16px' }} />
                           <List

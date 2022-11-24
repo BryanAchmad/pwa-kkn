@@ -15,7 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 // import { useState } from 'react';
-function KesehatanTab({ data }) {
+function LainLainTab({ data }) {
   // const [idProker, setIdProker] = useState('');
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ function KesehatanTab({ data }) {
   console.log(data);
   return (
     <Card>
-      <CardHeader title="Divisi Kesehatan & Lingkungan" />
+      <CardHeader title="Divisi Lain-lain" />
       <CardContent>
         <Box
           sx={{
@@ -87,4 +87,4 @@ function KesehatanTab({ data }) {
   );
 }
 
-export default KesehatanTab;
+export default LainLainTab;
