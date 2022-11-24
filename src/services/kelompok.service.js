@@ -20,7 +20,7 @@ const useProkerData = () => {
           axios.get(`/proker/${id}`),
           axios.get(`/divisi`),
           axios.get(`/media/${kelompok}`),
-          axios.get(`/mahasiswa/${userId}`)
+          axios.get(`/mahasiswa/details/${userId}`)
         ])
       ).map((r) => r);
 
