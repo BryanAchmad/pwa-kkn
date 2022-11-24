@@ -5,6 +5,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import { Navigate } from 'react-router';
 
 const Loader = (Component) => (props) =>
   (
@@ -161,10 +162,11 @@ const routes = (props) => [
         path: '/',
         element: (
           <>
-            <ProfilePage />
+            <ProfilePage {...props} />
           </>
         )
-      }
+      },
+      { path: 'dashboard', element: <Navigate to="/" replace /> }
     ]
   },
   {
