@@ -24,7 +24,7 @@ function PendidikanTab({ data }) {
     };
     // console.log(props);
     // const { data } = props;
-    console.log(data);
+    console.log("pendidikan", data);
     return (
         <Card>
             <CardHeader title="Divisi Pendidikan & Keagamaan" />

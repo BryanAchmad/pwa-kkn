@@ -7,13 +7,16 @@ import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 import { AuthProvider } from 'src/contexts/AuthProvider';
+import { ApiProvider } from './contexts/ApiContext';
 
 ReactDOM.render(
   <HelmetProvider>
     <SidebarProvider>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <ApiProvider>
+            <App />
+          </ApiProvider>
         </AuthProvider>
       </BrowserRouter>
     </SidebarProvider>

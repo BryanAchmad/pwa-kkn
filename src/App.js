@@ -1,12 +1,21 @@
 import { useRoutes } from 'react-router-dom';
 import router from 'src/router';
+// import PropTypes from 'prop-types';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import { CircularProgress, CssBaseline, Box, Typography } from '@mui/material';
+import {
+  // Backdrop,
+  // CircularProgress,
+  CssBaseline
+  // Typography
+} from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
-import useProkerData from './services/kelompok.service';
+// import { useAPI } from './contexts/ApiContext';
+// import { Box } from '@mui/system';
+// import ApiContext from './contexts/ApiContext';
+// import { useState } from 'react';
 // import { useEffect, useState } from 'react';
 // import { Suspense, lazy } from 'react';
 
@@ -22,27 +31,61 @@ import useProkerData from './services/kelompok.service';
 
 // import LoginPage from 'src/content/auth/Login';
 
-const LoadingScreen = () => {
-  console.log('loading');
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-    >
-      <CircularProgress />
-      <Typography>please wait until data already use 🔥</Typography>
-    </Box>
-  );
-};
+// const LoadingScreen = ({ open }) => {
+//   console.log('loading');
+//   return (
+//     <Backdrop
+//       open={open}
+//       sx={{
+//         color: '#fff',
+//         zIndex: (theme) => theme.zIndex.drawer + 10
+//       }}
+//     >
+//       <Box
+//         sx={{
+//           position: 'fixed',
+//           left: 0,
+//           top: 0,
+//           width: '100%',
+//           height: '100%'
+//         }}
+//         display="flex"
+//         flexDirection="column"
+//         alignItems="center"
+//         justifyContent="center"
+//       >
+//         <CircularProgress size={64} disableShrink thickness={3} />
+//         <Typography>Please Wait 🔥</Typography>
+//       </Box>
+//     </Backdrop>
+//   );
+// };
 
 function App() {
+  // const [status, setStatus] = useState(false);
+
+  // const setIsLoaded = (stat) => {
+  //   setStatus(stat);
+  // };
+
+  // const isLoaded = () => {
+  //   return status;
+  // };
+
+  // if (!status) return
   // const [loading, setLoading] = useState(false);
-  const { proker, prokers, fetching } = useProkerData();
-  console.log('from app', prokers);
-  const content = useRoutes(router({ proker, prokers }));
+  // const { proker, prokers, fetching } = useProkerData();
+  // const { prokers, divisi, mediaPub, user } = useProkerData(setIsLoaded());
+  // console.log('from app', prokers);
+  const content = useRoutes(router);
+
+  // const setIsLoaded = (value) => {
+  //   setIsFetching(value);
+  // };
+
+  // const isLoaded = () => {
+  //   return isFetching;
+  // };
 
   // const handleStatus = () => {
   //   if (proker === undefined && prokers === undefined) {
@@ -51,9 +94,8 @@ function App() {
   //     setLoading(false);
   //   }
   // };
-  // useEffect(() => {
 
-  // }, [proker, prokers]);
+  // if (!isLoaded) return <LoadingScreen />;
 
   // const getToken = () => {
   //   const tokenString = sessionStorage.getItem('access_token');
@@ -69,19 +111,29 @@ function App() {
   // const token = getToken();
 
   // if (!token) return <LoginPage setToken={setToken} />;
+  // const { isLoading } = useAPI();
+
+  // if (isLoading) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
-    <ThemeProvider>
-      {fetching ? (
-        <LoadingScreen />
-      ) : (
+    <>
+      {/* {isLoading ? (
+        <LoadingScreen open={isLoading} />
+      ) : ( */}
+      <ThemeProvider>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <CssBaseline />
           {content}
-          {/* {content} */}
         </LocalizationProvider>
-      )}
-    </ThemeProvider>
+      </ThemeProvider>
+      {/* )} */}
+    </>
   );
 }
 export default App;
+
+// App.propTypes = {
+//   setIsLoaded: PropTypes.func.isRequired
+// };
