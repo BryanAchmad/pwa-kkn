@@ -12,6 +12,10 @@ import {
   CardActions,
   Box
 } from '@mui/material';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LoadingButton } from '@mui/lab';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
@@ -30,9 +34,10 @@ const style = {
 
 function TambahKegiatan({ reload, idProker }) {
   const formData = new FormData();
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [judul, setJudul] = useState();
-  const [tanggal, setTanggal] = useState();
+  const [tanggalPicker, setTanggalPicker] = useState(dayjs());
   const [deskripsi, setDeskripsi] = useState();
   const [images, setImages] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
@@ -51,7 +56,7 @@ function TambahKegiatan({ reload, idProker }) {
   });
 
   formData.append('judul_kegiatan', judul);
-  formData.append('tanggal_kegiatan', tanggal);
+  formData.append('tanggal_kegiatan', new Date(tanggalPicker).toUTCString());
   formData.append('deskripsi', deskripsi);
   for (let i = 0; i < images.length; i++) {
     formData.append('images', images[i]);
@@ -94,21 +99,29 @@ function TambahKegiatan({ reload, idProker }) {
     setIsOpen(false);
   };
 
+  const handlePicker = (newValue) => {
+    setTanggalPicker(newValue);
+  };
+
   // const idProker = '6315c47d715ebda127766962';
 
   const saveData = () => {
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
+    setLoading(true);
     axios
-      .post(`http://localhost:8080/kegiatan/${idProker}`, formData)
+      .post(
+        `https://vast-sands-85280.herokuapp.com/kegiatan/${idProker}`,
+        formData
+      )
       .then((response) => {
         console.log('data', response);
-        setIsOpen(false);
-        reload();
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        setIsOpen(false);
+        reload();
       });
   };
 
@@ -137,19 +150,35 @@ function TambahKegiatan({ reload, idProker }) {
           <CardContent id="modal-modal-description">
             <FormGroup sx={{ gap: '16px' }}>
               <TextField
-                name="title"
+                name="judul"
                 id="outlined-basic"
                 label="Judul Kegiatan"
                 variant="outlined"
                 onChange={(e) => setJudul(e.target.value)}
               />
-              <TextField
-                name="divisi"
-                id="outlined-basic"
-                label="Tanggal Kegiatan"
-                variant="outlined"
-                onChange={(e) => setTanggal(e.target.value)}
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/* <TextField
+                  name="tanggal"
+                  id="outlined-basic"
+                  label="Tanggal Kegiatan"
+                  variant="outlined"
+                  onChange={(e) => setTanggal(e.target.value)}
+                /> */}
+                <DateTimePicker
+                  label="Date&Time picker"
+                  value={tanggalPicker}
+                  onChange={handlePicker}
+                  renderInput={(params) => (
+                    <TextField
+                      name="tanggal"
+                      id="outlined-basic"
+                      label="Tanggal Kegiatan"
+                      variant="outlined"
+                      {...params}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
               <TextField
                 name="deskripsi"
                 id="outlined-basic"
@@ -182,6 +211,7 @@ function TambahKegiatan({ reload, idProker }) {
             <LoadingButton
               variant="contained"
               loadingPosition="center"
+              loading={loading}
               onClick={saveData}
             >
               Simpan

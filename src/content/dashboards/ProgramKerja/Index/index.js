@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { LoadingButton } from '@mui/lab';
-import axios from 'axios';
+// import axios from 'axios';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import Typography from '@mui/material/Typography';
 import {
@@ -27,9 +27,18 @@ import {
 
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+// import LoaderComponent from 'src/components/Loader';
 
 import KesehatanTab from './Divisi/KesehatanTab';
 import EkonomiTab from './Divisi/EkonomiTab';
+import PendidikanTab from './Divisi/PendidikanTab';
+import PddTab from './Divisi/PddTab';
+import KebudayaanTab from './Divisi/KebudayaanTab';
+import LainlainTab from './Divisi/LainTab';
+import { useAPI } from 'src/contexts/ApiContext';
+import { createProkerReq } from 'src/api/proker';
+// import LoaderComponent from 'src/components/Loader';
+// import { useParams } from 'react-router';
 
 const style = {
   position: 'absolute',
@@ -50,10 +59,26 @@ const TabsWrapper = styled(Tabs)(
 );
 
 function ProgramKerja() {
-  const [prokers, setProkers] = useState([]);
+  // const param = useParams();
+  const { divisi, prokers, fetchAll } = useAPI();
+  console.log('prokers from useApi', prokers);
+
+  // console.log('prokers', prokers.data.proker);
+
+  // const programKerja = prokers.data.proker;
+  // const proker = data[0];
+  // const dProker = prokers.data.proker;
+  // const [programKerja, setProgramKerja] = useState(prokers);
+
+  // const { data: divisi } = data[1];
+  // console.log('data => ', data);
+  // const [spinner, setSpinner] = useState(false);
+  // const [token, setToken] = useState();
+  // const [divisi, setDivisi] = useState([]);
+  // const [proker, setProker] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [enableButton, setEnableButton] = useState(false);
-  const [currentTab, setCurrentTab] = useState('ekonomi');
+  const [currentTab, setCurrentTab] = useState('Divisi Pendidikan & keagamaan');
   const [dataProker, setDataProker] = useState({
     title: '',
     divisi: '',
@@ -61,30 +86,76 @@ function ProgramKerja() {
   });
   const [loadingButton, setLoadingButton] = useState(false);
   // let id = localStorage.getItem('idKelompok');
-  let id = '6371fbf11f1513f5cb27d656';
+  let id = '63734f0c41bfdb7ca8fbe819';
 
   const onClick = () => {
+    setLoadingButton(false);
+    saveProker();
+  };
+  // useEffect(() => {
+  //   setProgramKerja(getProkers(id));
+  // }, []);
+
+  // console.log(proker);
+
+  // const getDivisi = () => {
+  //   axios
+  //     .get(`https://vast-sands-85280.herokuapp.com/divisi`)
+  //     .then((response) => {
+  //       console.log(response.data.data);
+  //       setDivisi(response?.data?.data);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
+
+  // const Dropdown = ({ divisi }) => {
+  //   return (
+  //     <>
+  //       <MenuItem key={divisi._id} value={divisi.deskripsi}>
+  //         {divisi.value}
+  //       </MenuItem>
+  //     </>
+  //   );
+  // };
+
+  const saveProker = async () => {
     setLoadingButton(true);
-    sendData();
+    setEnableButton(true);
+    // const id = '63734f0c41bfdb7ca8fbe819';
+    try {
+      const send = await createProkerReq(id, dataProker);
+      console.log(send);
+      fetchAll();
+    } catch (e) {
+      console.log(e);
+      setLoadingButton(false);
+      setEnableButton(false);
+    } finally {
+      setOpen(false);
+    }
   };
 
-  const sendData = () => {
-    setEnableButton(true);
-    axios
-      .post(`http://127.0.0.1:8080/proker/${id}`, dataProker)
-      .then((response) => {
-        console.log(response);
-        setEnableButton(false);
-        setLoadingButton(false);
-        getDataProker();
-        setOpen(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoadingButton(false);
-        setEnableButton(false);
-      });
-  };
+  // const sendData = () => {
+  //   setLoadingButton(true);
+  //   setEnableButton(true);
+  //   axios
+  //     .post(`https://vast-sands-85280.herokuapp.com/proker/${id}`, dataProker)
+  //     .then((response) => {
+  //       console.log(response);
+  //       getDataProker();
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //       setLoadingButton(false);
+  //       setEnableButton(false);
+  //       getDataProker();
+  //     })
+  //     .finally(() => {
+  //       setOpen(false);
+  //     });
+  // };
 
   const handleChangeProker = (event) => {
     setDataProker({
@@ -94,49 +165,95 @@ function ProgramKerja() {
     // console.log(dataProker);
   };
 
-  const handleOpen = () => setOpen(true);
+  // const getDivisi = () => {
+  //   divisi?.data.map((div) => {
+  //     return div;
+  //   });
+  // };
+
+  // const getToken = () => {
+
+  // };
+  const handleOpen = () => {
+    setOpen(true);
+    // getDivisi();
+  };
   const handleClose = () => setOpen(false);
 
-  const getDataProker = () => {
-    axios
-      .get(`http://localhost:8080/proker/${id}`, {
-        headers: {
-          'x-access-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
-        }
-      })
-      .then((response) => {
-        console.log(response);
-        setProkers(response.data.proker);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+  // const getDataProker = () => {
+  //   setSpinner(true);
+  //   axios
+  //     .get(`https://vast-sands-85280.herokuapp.com/proker/${id}`, {
+  //       headers: {
+  //         'x-access-token':
+  //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MzRmMzU0MWJmZGI3Y2E4ZmJlODFlIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NTg2NDQ2LCJleHAiOjE2Njg2NzI4NDZ9.WTPLTg-ODro1Yv75-CyD8pbY0WTb3fGGqo2ao0f5cms'
+  //       }
+  //     })
+  //     .then((response) => {
+  //       console.log('from client', new Date());
+  //       console.log(response);
+  //       setProkers(response.data.proker);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     })
+  //     .finally(() => {
+  //       setSpinner(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    getDataProker();
-  }, []);
+  // useEffect(() => {
+  //   // const tokenAccess = sessionStorage.getItem('access_token');
+  //   // setToken(tokenAccess);
+  //   getDataProker();
+  //   // getDivisi();
+  // }, []);
 
   const tabs = [
-    { value: 'ekonomi', label: 'Ekonomi' },
-    { value: 'kesehatan', label: 'Kesehatan' },
-    { value: 'sosial_budaya', label: 'Sosial & Budaya' },
-    { value: 'pendidikan_agama', label: 'Pendidikan & Keagamaan' },
-    { value: 'humas', label: 'Humas' },
-    { value: 'lain', label: 'Lain-lain' }
+    {
+      value: 'Divisi Kesehatan & Lingkungan',
+      label: 'Divisi Kesehatan & Lingkungan'
+    },
+    { value: 'Divisi Ekonomi', label: 'Divisi Ekonomi' },
+    {
+      value: 'Divisi Pendidikan & keagamaan',
+      label: 'Divisi Pendidikan & keagamaan'
+    },
+    { value: 'Divisi Sosial & Budaya', label: 'Divisi Sosial & Budaya' },
+    { value: 'Divisi HUMAS & PDD', label: 'Divisi HUMAS & PDD' },
+    { value: 'Divisi Lain-lain', label: 'Divisi Lain-lain' }
   ];
 
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
   };
-  const kesehatan = prokers.filter((prokers) => prokers.divisi === 'test1');
-  const ekonomi = prokers.filter((prokers) => prokers.divisi === 'test4');
+  // const TabMenu = [...new Set(prokers.map((divisi) => divisi.divisi))];
+
+  const kesehatan = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi Kesehatan & Lingkungan'
+  );
+  const ekonomi = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi Ekonomi'
+  );
+  const pendidikan = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi Pendidikan & keagamaan'
+  );
+  const pdd = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi HUMAS & PDD'
+  );
+  const kebudayaan = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi Sosial & Budaya'
+  );
+  const lainlain = prokers.data.proker.filter(
+    (prokers) => prokers.divisi === 'Divisi Lain-lain'
+  );
+
+  console.log('pendidikan', pendidikan);
 
   return (
     <>
       <Helmet>
-        <title>User Details - Management</title>
+        <title>SIMKKN - Program Kerja</title>
       </Helmet>
       <PageTitleWrapper>
         <Grid container justifyContent="space-between" alignItems="center">
@@ -177,7 +294,7 @@ function ProgramKerja() {
                       variant="outlined"
                       onChange={handleChangeProker}
                     />
-                    <FormControl fullwidth>
+                    <FormControl fullwidth={+true}>
                       <InputLabel id="demo-simple-select-label">
                         Divisi
                       </InputLabel>
@@ -186,10 +303,18 @@ function ProgramKerja() {
                         labelId="demo-simple-select-label"
                         label="Divisi"
                         name="divisi"
+                        defaultValue=""
                       >
-                        <MenuItem value={'test1'}>Ten</MenuItem>
+                        {divisi &&
+                          divisi.data.data.map((div, i) => (
+                            <MenuItem
+                              key={i}
+                              value={div.nama}
+                            >{`${div.deskripsi}`}</MenuItem>
+                          ))}
+                        {/* 
                         <MenuItem value={'test4'}>Twenty</MenuItem>
-                        <MenuItem value={'30'}>Thirty</MenuItem>
+                        <MenuItem value={'30'}>Thirty</MenuItem> */}
                       </Select>
                     </FormControl>
                     <TextField
@@ -244,16 +369,37 @@ function ProgramKerja() {
               textColor="primary"
               indicatorColor="primary"
             >
+              {/* {divisi.map((div) => {
+                return (
+                  <Tab key={div._id} label={div.nama} value={div.deskripsi} />
+                );
+              })} */}
               {tabs.map((tab) => (
                 <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
             </TabsWrapper>
           </Grid>
           <Grid item xs={12}>
-            {currentTab === 'kesehatan' && <KesehatanTab data={kesehatan} />}
-            {currentTab === 'ekonomi' && <EkonomiTab data={ekonomi} />}
-            {/* {{currentTab === 'notifications' && <NotificationsTab />}
-                        {currentTab === 'security' && <SecurityTab />} */}
+            {/* {!spinner ? ( */}
+            <>
+              {currentTab === 'Divisi Pendidikan & Keagamaan' && (
+                <PendidikanTab data={pendidikan} />
+              )}
+              {currentTab === 'Divisi Sosial & Budaya' && (
+                <KebudayaanTab data={kebudayaan} />
+              )}
+              {currentTab === 'Divisi Kesehatan & Lingkungan' && (
+                <KesehatanTab data={kesehatan} />
+              )}
+              {currentTab === 'Divisi Ekonomi' && <EkonomiTab data={ekonomi} />}
+              {currentTab === 'Divisi HUMAS & PDD' && <PddTab data={pdd} />}
+              {currentTab === 'Divisi Lain-lain' && (
+                <LainlainTab data={lainlain} />
+              )}
+            </>
+            {/* ) : (
+              <LoaderComponent />
+            )} */}
           </Grid>
         </Grid>
       </Container>

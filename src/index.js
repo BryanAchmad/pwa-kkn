@@ -6,12 +6,18 @@ import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
+import { AuthProvider } from 'src/contexts/AuthProvider';
+import { ApiProvider } from './contexts/ApiContext';
 
 ReactDOM.render(
   <HelmetProvider>
     <SidebarProvider>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <ApiProvider>
+            <App />
+          </ApiProvider>
+        </AuthProvider>
       </BrowserRouter>
     </SidebarProvider>
   </HelmetProvider>,

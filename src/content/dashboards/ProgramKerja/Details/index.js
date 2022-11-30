@@ -5,6 +5,7 @@ import Footer from 'src/components/Footer';
 import axios from 'axios';
 import EditProker from '../Edit';
 import TambahKegiatan from './TambahKegiatan';
+import LoaderComponent from 'src/components/Loader';
 
 import { Container, Grid, Box, Typography } from '@mui/material';
 
@@ -23,6 +24,7 @@ import ListKegiatan from './ListKegiatan';
 // };
 
 function DetailsProgramKerja() {
+  const [loader, setLoader] = useState(false);
   const [prokers, setProkers] = useState([]);
   //   const [open, setOpen] = useState(false);
   //   const [loadingButton, setLoadingButton] = useState(false);
@@ -34,8 +36,9 @@ function DetailsProgramKerja() {
 
   const reload = () => {
     console.log('reload page parent');
+    setLoader(true);
     axios
-      .get(`http://localhost:8080/proker/details/${id}`, {
+      .get(`https://vast-sands-85280.herokuapp.com/proker/details/${id}`, {
         headers: {
           'x-access-token':
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
@@ -47,13 +50,17 @@ function DetailsProgramKerja() {
       })
       .catch((e) => {
         console.log(e);
+      })
+      .finally(() => {
+        setLoader(false);
       });
   };
 
   useEffect(() => {
     const getData = () => {
+      setLoader(true);
       axios
-        .get(`http://localhost:8080/proker/details/${id}`, {
+        .get(`https://vast-sands-85280.herokuapp.com/proker/details/${id}`, {
           headers: {
             'x-access-token':
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
@@ -65,6 +72,9 @@ function DetailsProgramKerja() {
         })
         .catch((e) => {
           console.log(e);
+        })
+        .finally(() => {
+          setLoader(false);
         });
     };
 
@@ -141,37 +151,43 @@ function DetailsProgramKerja() {
         </Grid>
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        {prokers ? (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
-            <Grid item xs={12}>
-              <Grid container direction="row">
-                <Grid item xs={8}>
-                  <Box>
-                    <Typography variant="h3" component="h3" gutterBottom>
-                      {prokers.title}
-                    </Typography>
-                    <Typography variant="subtitle2">
-                      {prokers.deskripsi}
-                    </Typography>
-                  </Box>
+        {!loader ? (
+          <>
+            {prokers ? (
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="stretch"
+                spacing={3}
+              >
+                <Grid item xs={12}>
+                  <Grid container direction="row">
+                    <Grid item xs={8}>
+                      <Box>
+                        <Typography variant="h3" component="h3" gutterBottom>
+                          {prokers.title}
+                        </Typography>
+                        <Typography variant="subtitle2">
+                          {prokers.deskripsi}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={4} justifyContent="end" textAlign={'end'}>
+                      <TambahKegiatan reload={reload} idProker={id} />
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid item xs={4} justifyContent="end" textAlign={'end'}>
-                  <TambahKegiatan reload={reload} idProker={id} />
+                <Grid item xs={12}>
+                  <ListKegiatan data={prokers} id-proker={id} />
                 </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <ListKegiatan data={prokers} id-proker={id} />
-            </Grid>
-          </Grid>
+            ) : (
+              <Typography>asdasdasdad</Typography>
+            )}
+          </>
         ) : (
-          <Typography>asdasdasdad</Typography>
+          <LoaderComponent />
         )}
       </Container>
       <Footer />

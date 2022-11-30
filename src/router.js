@@ -5,6 +5,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
+import { Navigate } from 'react-router';
 
 const Loader = (Component) => (props) =>
   (
@@ -81,6 +82,11 @@ const MediaPublikasi = Loader(
   lazy(() => import('src/content/dashboards/Laporan/MediaPublikasi'))
 );
 
+// Auth
+
+const LoginPage = Loader(lazy(() => import('src/content/auth/Login')));
+const RegisterPage = Loader(lazy(() => import('src/content/auth/Register')));
+
 // Status
 
 // const Status404 = Loader(
@@ -141,10 +147,12 @@ const routes = [
   //   ]
   // },
   {
-    path: 'login'
+    path: 'login',
+    element: <LoginPage />
   },
   {
-    path: 'register'
+    path: 'register',
+    element: <RegisterPage />
   },
   {
     path: '',
@@ -157,7 +165,8 @@ const routes = [
             <ProfilePage />
           </>
         )
-      }
+      },
+      { path: 'dashboard', element: <Navigate to="/" replace /> }
     ]
   },
   {

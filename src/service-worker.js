@@ -78,6 +78,19 @@ registerRoute(
   })
 );
 
+registerRoute(
+  ({ url }) => url.origin.includes('vast-sands-85280.herokuapp.com'),
+  new NetworkFirst({
+    cacheName: 'apiData',
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 360,
+        maxEntries: 30
+      })
+    ]
+  })
+);
+
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
