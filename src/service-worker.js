@@ -80,7 +80,7 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin.includes('vast-sands-85280.herokuapp.com'),
-  new NetworkFirst({
+  new StaleWhileRevalidate({
     cacheName: 'apiData',
     plugins: [
       new ExpirationPlugin({
