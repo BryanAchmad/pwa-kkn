@@ -108,10 +108,7 @@ function TambahKegiatan({ reload, idProker }) {
   const saveData = () => {
     setLoading(true);
     axios
-      .post(
-        `https://vast-sands-85280.herokuapp.com/kegiatan/${idProker}`,
-        formData
-      )
+      .post(`https://kkn-umm.vercel.app/kegiatan/${idProker}`, formData)
       .then((response) => {
         console.log('data', response);
         setLoading(false);

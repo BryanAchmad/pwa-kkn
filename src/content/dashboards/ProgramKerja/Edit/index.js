@@ -60,10 +60,7 @@ function EditProker({ data, reload }) {
   const updateData = () => {
     console.log('clicked');
     axios
-      .patch(
-        `https://vast-sands-85280.herokuapp.com/proker/${data._id}`,
-        dataProker
-      )
+      .patch(`https://kkn-umm.vercel.app/proker/${data._id}`, dataProker)
       .then((response) => {
         console.log('update', response);
         setIsOpen(false);

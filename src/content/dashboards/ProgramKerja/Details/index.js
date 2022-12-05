@@ -38,7 +38,7 @@ function DetailsProgramKerja() {
     console.log('reload page parent');
     setLoader(true);
     axios
-      .get(`https://vast-sands-85280.herokuapp.com/proker/details/${id}`, {
+      .get(`https://kkn-umm.vercel.app/proker/details/${id}`, {
         headers: {
           'x-access-token':
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'
@@ -60,7 +60,7 @@ function DetailsProgramKerja() {
     const getData = () => {
       setLoader(true);
       axios
-        .get(`https://vast-sands-85280.herokuapp.com/proker/details/${id}`, {
+        .get(`https://kkn-umm.vercel.app/proker/details/${id}`, {
           headers: {
             'x-access-token':
               'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MWZiZjcxZjE1MTNmNWNiMjdkNjViIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NDE1ODg0LCJleHAiOjE2Njg1MDIyODR9.oaaZZLzxqX9lZ9e7BlP5n8pbKhHgAp6WpNOmCFHg5Ps'

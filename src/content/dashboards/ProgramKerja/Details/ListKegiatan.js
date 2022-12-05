@@ -187,7 +187,7 @@ function ListKegiatan({ data }) {
                               {kegiatan.images.map((file, i) => (
                                 <ImageListItem key={i}>
                                   <img
-                                    src={`https://vast-sands-85280.herokuapp.com/${file.filePath}`}
+                                    src={`https://kkn-umm.vercel.app/${file.filePath}`}
                                     alt={file.fileName}
                                     loading="lazy"
                                   />

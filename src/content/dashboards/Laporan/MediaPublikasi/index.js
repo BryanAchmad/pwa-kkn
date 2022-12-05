@@ -49,7 +49,7 @@ const columns = [
           className="d-flex justify-content-between align-items-center"
           style={{ cursor: 'pointer' }}
         >
-          <DeleteMedia index={params}/>
+          <DeleteMedia index={params} />
           <LinkComponent index={params} />
         </div>
       );
@@ -113,7 +113,7 @@ function MediaPublikasi() {
   const getMedia = () => {
     setSpinner(true);
     axios
-      .get(`https://vast-sands-85280.herokuapp.com/media/${kelompok}`)
+      .get(`https://kkn-umm.vercel.app/media/${kelompok}`)
       .then((response) => {
         setMedia(response.data.data);
       })
@@ -129,7 +129,7 @@ function MediaPublikasi() {
   const saveMedia = () => {
     setLoading(true);
     axios
-      .post(`https://vast-sands-85280.herokuapp.com/media/${id}`, {
+      .post(`https://kkn-umm.vercel.app/media/${id}`, {
         no_kelompok: kelompok,
         link: data
       })
