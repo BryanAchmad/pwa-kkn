@@ -79,7 +79,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin.includes('vast-sands-85280.herokuapp.com'),
+  ({ url }) => url.origin.includes('kkn-umm.vercel.app'),
   new StaleWhileRevalidate({
     cacheName: 'apiData',
     plugins: [
