@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useContext } from 'react';
 // import { Navigate } from 'react-router-dom';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
@@ -14,6 +14,11 @@ const Loader = (Component) => (props) =>
     </Suspense>
   );
 
+import AuthContext from './contexts/AuthProvider';
+
+const PublicRoute = () => {
+  const auth = useContext(Au)
+}
 // Pages
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));

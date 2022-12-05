@@ -1,4 +1,4 @@
-import axios from 'src/api/axios';
+// import axios from 'src/api/axios';
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -13,11 +13,13 @@ import {
 } from '@mui/material';
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
 import AuthContext from 'src/contexts/AuthProvider';
+import { useNavigate } from 'react-router';
+import { login } from 'src/api/auth';
 
-const LOGIN_URL = '/login';
+// const LOGIN_URL = '/login';
 
 const index = () => {
-  const { setAuth } = useContext(AuthContext);
+  // const { setAuth } = useContext(AuthContext);
   const [credentials, setCrendentials] = useState({
     nim: '',
     pic: '',
@@ -43,22 +45,29 @@ const index = () => {
   const LoginUser = () => {
     // console.log(credentials);
     // axios.defaults.withCredentials = true;
-    axios
-      .post(LOGIN_URL, credentials, {
-        headers: { 'content-type': 'application/json' },
-        withCredentials: true
-      })
-      .then((response) => {
-        console.log(response);
-        const nim = response?.data?.nim;
-        const nama = response?.data?.idMahasiswa?.nama;
-        const kelompok = response?.data?.kelompok;
-        const token = response?.data?.access_token;
-        setAuth({ nim, nama, kelompok, token });
-        // process.exit();
-        // setToken(response.data?.data?.access_token);
-      })
-      .catch((e) => console.log(e));
+    // const authContext = useContext(AuthContext);
+    // const navigate = useNavigate();
+
+    const handleSubmit = async () => {
+      const response = await login(credentials);
+      console.log(response);
+    };
+    // axios
+    //   .post(LOGIN_URL, credentials, {
+    //     headers: { 'content-type': 'application/json' },
+    //     withCredentials: true
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     const nim = response?.data?.nim;
+    //     const nama = response?.data?.idMahasiswa?.nama;
+    //     const kelompok = response?.data?.kelompok;
+    //     const token = response?.data?.access_token;
+    //     setAuth({ nim, nama, kelompok, token });
+    //     // process.exit();
+    //     // setToken(response.data?.data?.access_token);
+    //   })
+    //   .catch((e) => console.log(e));
   };
 
   //   debugger;
@@ -147,7 +156,7 @@ const index = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  onClick={LoginUser}
+                  onClick={handleSubmit}
                 >
                   Sign In
                 </Button>
