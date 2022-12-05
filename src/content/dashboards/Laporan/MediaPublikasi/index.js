@@ -8,7 +8,8 @@ import {
   TextField,
   // Button,
   FormControlLabel,
-  IconButton
+  IconButton,
+  Skeleton
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -21,8 +22,8 @@ import {
   DeleteOutline as DeleteIcon
 } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
-import LoaderComponent from 'src/components/Loader';
 import { LoadingButton } from '@mui/lab';
+import { useAPI } from 'src/contexts/ApiContext';
 // import { Link } from 'react-router-dom';
 
 const columns = [
@@ -104,26 +105,28 @@ const LinkComponent = ({ index }) => {
 // ];
 
 function MediaPublikasi() {
-  const [media, setMedia] = useState([]);
+  const { media, isLoading, fetchAll } = useAPI();
+  console.log(media);
+  // const [media, setMedia] = useState([]);
   const [data, setData] = useState();
-  const [spinner, setSpinner] = useState(false);
+  // const [spinner, setSpinner] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   let kelompok = '10';
-  const getMedia = () => {
-    setSpinner(true);
-    axios
-      .get(`https://kkn-umm.vercel.app/media/${kelompok}`)
-      .then((response) => {
-        setMedia(response.data.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        setSpinner(false);
-      });
-  };
+  // const getMedia = () => {
+  //   setSpinner(true);
+  //   axios
+  //     .get(`https://kkn-umm.vercel.app/media/${kelompok}`)
+  //     .then((response) => {
+  //       setMedia(response.data.data);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     })
+  //     .finally(() => {
+  //       setSpinner(false);
+  //     });
+  // };
 
   let id = '63734f0c41bfdb7ca8fbe819';
   const saveMedia = () => {
@@ -135,7 +138,7 @@ function MediaPublikasi() {
       })
       .then((response) => {
         console.log(response);
-        getMedia();
+        fetchAll();
       })
       .catch((e) => {
         console.log(e);
@@ -146,7 +149,7 @@ function MediaPublikasi() {
   };
 
   useEffect(() => {
-    getMedia();
+    // getMedia();
   }, []);
 
   return (
@@ -158,10 +161,18 @@ function MediaPublikasi() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h3" component="h3" gutterBottom>
-              Media Publikasi
+              {isLoading ? (
+                <Skeleton animation="wave" width={200} />
+              ) : (
+                'Media Publikasi'
+              )}
             </Typography>
             <Typography variant="subtitle2">
-              Jika ada publikasi berupa media
+              {isLoading ? (
+                <Skeleton animation="wave" width={200} />
+              ) : (
+                'Tambahkan segala bentuk media publikasi dalam bentuk link'
+              )}
             </Typography>
           </Grid>
         </Grid>
@@ -184,7 +195,13 @@ function MediaPublikasi() {
                 spacing={2}
               >
                 <Grid item xs={12}>
-                  <Typography variant="h4">Tambah Media Publikasi</Typography>
+                  <Typography variant="h4">
+                    {isLoading ? (
+                      <Skeleton animation="wave" width={200} />
+                    ) : (
+                      'Tambah Media Publikasi'
+                    )}
+                  </Typography>
                 </Grid>
                 <Grid item xs={12} xl={10}>
                   <TextField
@@ -201,6 +218,7 @@ function MediaPublikasi() {
                         setData(e.target.value);
                       }
                     }}
+                    disabled={isLoading}
                     fullWidth
                   />
                 </Grid>
@@ -214,6 +232,7 @@ function MediaPublikasi() {
                     loading={loading}
                     onClick={saveMedia}
                     startIcon={<AddIcon />}
+                    disabled={isLoading}
                   >
                     Simpan
                   </LoadingButton>
@@ -234,23 +253,23 @@ function MediaPublikasi() {
           </Grid>
 
           <Grid item xs={12}>
-            <Card elevation={0}>
-              <CardHeader title="List Publikasi" />
-              <CardContent sx={{ height: 'auto', width: '100%' }}>
-                {!spinner ? (
+            {isLoading ? (
+              <Skeleton height={200} animation="wave" sx={{ marginTop: -5 }} />
+            ) : (
+              <Card elevation={0}>
+                <CardHeader title="List Publikasi" />
+                <CardContent sx={{ height: 'auto', width: '100%' }}>
                   <DataGrid
                     autoHeight
-                    rows={media}
+                    rows={media.data.data}
                     columns={columns}
                     getRowId={(rows) => rows._id}
                     pageSize={20}
                     rowsPerPageOptions={[5]}
                   />
-                ) : (
-                  <LoaderComponent />
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </Grid>
         </Grid>
       </Container>

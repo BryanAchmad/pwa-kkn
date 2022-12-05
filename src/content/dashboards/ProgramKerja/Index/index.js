@@ -79,7 +79,7 @@ function ProgramKerja() {
   // const [proker, setProker] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [enableButton, setEnableButton] = useState(false);
-  const [currentTab, setCurrentTab] = useState('Divisi Pendidikan & keagamaan');
+  const [currentTab, setCurrentTab] = useState('Divisi Ekonomi');
   const [dataProker, setDataProker] = useState({
     title: '',
     divisi: '',
@@ -409,26 +409,34 @@ function ProgramKerja() {
             )}
           </Grid>
           <Grid item xs={12}>
-            {/* {!spinner ? ( */}
             <>
-              {currentTab === 'Divisi Pendidikan & Keagamaan' && (
-                <PendidikanTab data={pendidikan} />
-              )}
-              {currentTab === 'Divisi Sosial & Budaya' && (
-                <KebudayaanTab data={kebudayaan} />
-              )}
-              {currentTab === 'Divisi Kesehatan & Lingkungan' && (
-                <KesehatanTab data={kesehatan} />
-              )}
-              {currentTab === 'Divisi Ekonomi' && <EkonomiTab data={ekonomi} />}
-              {currentTab === 'Divisi HUMAS & PDD' && <PddTab data={pdd} />}
-              {currentTab === 'Divisi Lain-lain' && (
-                <LainlainTab data={lainlain} />
+              {isLoading ? (
+                <Skeleton
+                  animation="wave"
+                  height={400}
+                  sx={{ marginTop: -10 }}
+                />
+              ) : (
+                <>
+                  {currentTab === 'Divisi Pendidikan & Keagamaan' && (
+                    <PendidikanTab data={pendidikan} />
+                  )}
+                  {currentTab === 'Divisi Sosial & Budaya' && (
+                    <KebudayaanTab data={kebudayaan} />
+                  )}
+                  {currentTab === 'Divisi Kesehatan & Lingkungan' && (
+                    <KesehatanTab data={kesehatan} />
+                  )}
+                  {currentTab === 'Divisi Ekonomi' && (
+                    <EkonomiTab data={ekonomi} />
+                  )}
+                  {currentTab === 'Divisi HUMAS & PDD' && <PddTab data={pdd} />}
+                  {currentTab === 'Divisi Lain-lain' && (
+                    <LainlainTab data={lainlain} />
+                  )}
+                </>
               )}
             </>
-            {/* ) : (
-              <LoaderComponent />
-            )} */}
           </Grid>
         </Grid>
       </Container>

@@ -10,7 +10,9 @@ import {
   FormGroup,
   TextField,
   CardActions,
-  Box
+  Box,
+  Skeleton,
+  Typography
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -32,7 +34,7 @@ const style = {
   p: 2
 };
 
-function TambahKegiatan({ reload, idProker }) {
+function TambahKegiatan({ reload, idProker, isLoading }) {
   const formData = new FormData();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -133,8 +135,30 @@ function TambahKegiatan({ reload, idProker }) {
 
   return (
     <>
-      <Button variant="contained" startIcon={<EditIcon />} onClick={handleOpen}>
-        Tambah Kegiatan
+      <Button
+        variant="contained"
+        startIcon={
+          isLoading ? (
+            <Skeleton
+              variant="circular"
+              animation="wave"
+              height={16}
+              width={16}
+            />
+          ) : (
+            <EditIcon />
+          )
+        }
+        onClick={handleOpen}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Typography variant="subtitle2">
+            <Skeleton animation="wave" width={100} height={40} />
+          </Typography>
+        ) : (
+          'Tambah Kegiatan'
+        )}
       </Button>
       <Modal
         open={isOpen}

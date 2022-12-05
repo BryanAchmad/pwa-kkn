@@ -10,7 +10,8 @@ import {
   Divider,
   FormGroup,
   TextField,
-  CardActions
+  CardActions,
+  Skeleton
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import EditIcon from '@mui/icons-material/Edit';
@@ -28,7 +29,7 @@ const style = {
   p: 2
 };
 
-function EditProker({ data, reload }) {
+function EditProker({ data, reload, isLoading }) {
   const [isOpen, setIsOpen] = useState(false);
   const [dataProker, setDataProker] = useState({
     title: data.title,
@@ -73,8 +74,28 @@ function EditProker({ data, reload }) {
 
   return (
     <>
-      <Button variant="contained" startIcon={<EditIcon />} onClick={handleOpen}>
-        Edit
+      <Button
+        variant="contained"
+        startIcon={
+          isLoading ? (
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              height={16}
+              width={16}
+            />
+          ) : (
+            <EditIcon />
+          )
+        }
+        onClick={handleOpen}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Skeleton animation="wave" width={100} height={40} />
+        ) : (
+          'Edit'
+        )}
       </Button>
       <Modal
         open={isOpen}

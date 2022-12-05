@@ -5,9 +5,9 @@ import Footer from 'src/components/Footer';
 import axios from 'axios';
 import EditProker from '../Edit';
 import TambahKegiatan from './TambahKegiatan';
-import LoaderComponent from 'src/components/Loader';
+// import LoaderComponent from 'src/components/Loader';
 
-import { Container, Grid, Box, Typography } from '@mui/material';
+import { Container, Grid, Box, Typography, Skeleton } from '@mui/material';
 
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import ListKegiatan from './ListKegiatan';
@@ -24,7 +24,7 @@ import ListKegiatan from './ListKegiatan';
 // };
 
 function DetailsProgramKerja() {
-  const [loader, setLoader] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [prokers, setProkers] = useState([]);
   //   const [open, setOpen] = useState(false);
   //   const [loadingButton, setLoadingButton] = useState(false);
@@ -36,7 +36,7 @@ function DetailsProgramKerja() {
 
   const reload = () => {
     console.log('reload page parent');
-    setLoader(true);
+    setIsLoading(true);
     axios
       .get(`https://kkn-umm.vercel.app/proker/details/${id}`, {
         headers: {
@@ -52,13 +52,13 @@ function DetailsProgramKerja() {
         console.log(e);
       })
       .finally(() => {
-        setLoader(false);
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
     const getData = () => {
-      setLoader(true);
+      setIsLoading(true);
       axios
         .get(`https://kkn-umm.vercel.app/proker/details/${id}`, {
           headers: {
@@ -74,7 +74,7 @@ function DetailsProgramKerja() {
           console.log(e);
         })
         .finally(() => {
-          setLoader(false);
+          setIsLoading(false);
         });
     };
 
@@ -90,11 +90,15 @@ function DetailsProgramKerja() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h3" component="h3" gutterBottom>
-              Details Program Kerja
+              {isLoading ? (
+                <Skeleton animation="wave" width={180} />
+              ) : (
+                'Details Program Kerja'
+              )}
             </Typography>
           </Grid>
           <Grid item>
-            <EditProker data={prokers} reload={reload} />
+            <EditProker data={prokers} reload={reload} isLoading={isLoading} />
             {/* <Link to="/program-kerja/create"> */}
             {/* <Button
                             sx={{ mt: { xs: 2, md: 0 } }}
@@ -151,43 +155,45 @@ function DetailsProgramKerja() {
         </Grid>
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        {!loader ? (
-          <>
-            {prokers ? (
-              <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="stretch"
-                spacing={3}
-              >
-                <Grid item xs={12}>
-                  <Grid container direction="row">
-                    <Grid item xs={8}>
-                      <Box>
-                        <Typography variant="h3" component="h3" gutterBottom>
-                          {prokers.title}
-                        </Typography>
-                        <Typography variant="subtitle2">
-                          {prokers.deskripsi}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={4} justifyContent="end" textAlign={'end'}>
-                      <TambahKegiatan reload={reload} idProker={id} />
-                    </Grid>
-                  </Grid>
+        {prokers ? (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+            spacing={3}
+          >
+            <Grid item xs={12}>
+              <Grid container direction="row">
+                <Grid item xs={8}>
+                  <Box>
+                    <Typography variant="h3" component="h3" gutterBottom>
+                      {isLoading ? <Skeleton /> : `${prokers.title}`}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {isLoading ? <Skeleton /> : `${prokers.deskripsi}`}
+                    </Typography>
+                  </Box>
                 </Grid>
-                <Grid item xs={12}>
-                  <ListKegiatan data={prokers} id-proker={id} />
+                <Grid item xs={4} justifyContent="end" textAlign={'end'}>
+                  <TambahKegiatan
+                    reload={reload}
+                    idProker={id}
+                    isLoading={isLoading}
+                  />
                 </Grid>
               </Grid>
-            ) : (
-              <Typography>asdasdasdad</Typography>
-            )}
-          </>
+            </Grid>
+            <Grid item xs={12}>
+              <ListKegiatan
+                data={prokers}
+                id-proker={id}
+                isLoading={isLoading}
+              />
+            </Grid>
+          </Grid>
         ) : (
-          <LoaderComponent />
+          <Typography>asdasdasdad</Typography>
         )}
       </Container>
       <Footer />
