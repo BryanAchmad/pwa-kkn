@@ -22,7 +22,8 @@ import {
   Select,
   FormControl,
   styled,
-  CardActions
+  CardActions,
+  Skeleton
 } from '@mui/material';
 
 import Footer from 'src/components/Footer';
@@ -60,7 +61,7 @@ const TabsWrapper = styled(Tabs)(
 
 function ProgramKerja() {
   // const param = useParams();
-  const { divisi, prokers, fetchAll } = useAPI();
+  const { divisi, prokers, fetchAll, isLoading } = useAPI();
   console.log('prokers from useApi', prokers);
 
   // console.log('prokers', prokers.data.proker);
@@ -229,22 +230,22 @@ function ProgramKerja() {
   };
   // const TabMenu = [...new Set(prokers.map((divisi) => divisi.divisi))];
 
-  const kesehatan = prokers.data.proker.filter(
+  const kesehatan = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi Kesehatan & Lingkungan'
   );
-  const ekonomi = prokers.data.proker.filter(
+  const ekonomi = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi Ekonomi'
   );
-  const pendidikan = prokers.data.proker.filter(
+  const pendidikan = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi Pendidikan & keagamaan'
   );
-  const pdd = prokers.data.proker.filter(
+  const pdd = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi HUMAS & PDD'
   );
-  const kebudayaan = prokers.data.proker.filter(
+  const kebudayaan = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi Sosial & Budaya'
   );
-  const lainlain = prokers.data.proker.filter(
+  const lainlain = prokers?.data?.proker.filter(
     (prokers) => prokers.divisi === 'Divisi Lain-lain'
   );
 
@@ -259,19 +260,41 @@ function ProgramKerja() {
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Typography variant="h3" component="h3" gutterBottom>
-              Program Kerja
+              {isLoading ? (
+                <Skeleton animation="wave" width={150} />
+              ) : (
+                'Program Kerja'
+              )}
             </Typography>
-            <Typography variant="subtitle2">List Program Kerja</Typography>
+            <Typography variant="subtitle2">
+              {isLoading ? <Skeleton animation="wave" /> : 'List Program Kerja'}
+            </Typography>
           </Grid>
           <Grid item>
             {/* <Link to="/program-kerja/create"> */}
             <Button
               sx={{ mt: { xs: 2, md: 0 } }}
               variant="contained"
-              startIcon={<AddTwoToneIcon fontSize="small" />}
+              startIcon={
+                isLoading ? (
+                  <Skeleton
+                    variant="circular"
+                    animation="wave"
+                    width={12}
+                    height={12}
+                  />
+                ) : (
+                  <AddTwoToneIcon fontSize="small" />
+                )
+              }
               onClick={handleOpen}
+              disabled={isLoading}
             >
-              Program Kerja
+              {isLoading ? (
+                <Skeleton animation="wave" width={100} height={40} />
+              ) : (
+                'Program Kerja'
+              )}
             </Button>
             <Modal
               open={open}
@@ -361,23 +384,29 @@ function ProgramKerja() {
           alignItems="stretch"
         >
           <Grid item xs={12}>
-            <TabsWrapper
-              onChange={handleTabsChange}
-              value={currentTab}
-              variant="scrollable"
-              scrollButtons="auto"
-              textColor="primary"
-              indicatorColor="primary"
-            >
-              {/* {divisi.map((div) => {
+            {isLoading ? (
+              <Skeleton animation="wave" height={80} sx={{ padding: 0 }} />
+            ) : (
+              <>
+                <TabsWrapper
+                  onChange={handleTabsChange}
+                  value={currentTab}
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  textColor="primary"
+                  indicatorColor="primary"
+                >
+                  {/* {divisi.map((div) => {
                 return (
                   <Tab key={div._id} label={div.nama} value={div.deskripsi} />
-                );
-              })} */}
-              {tabs.map((tab) => (
-                <Tab key={tab.value} label={tab.label} value={tab.value} />
-              ))}
-            </TabsWrapper>
+                  );
+                })} */}
+                  {tabs.map((tab) => (
+                    <Tab key={tab.value} label={tab.label} value={tab.value} />
+                  ))}
+                </TabsWrapper>
+              </>
+            )}
           </Grid>
           <Grid item xs={12}>
             {/* {!spinner ? ( */}

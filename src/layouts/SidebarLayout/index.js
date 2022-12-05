@@ -2,10 +2,10 @@ import {
   Box,
   alpha,
   lighten,
-  useTheme,
-  CircularProgress,
-  Backdrop,
-  Typography
+  useTheme
+  // CircularProgress,
+  // Backdrop,
+  // Typography
 } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
@@ -13,45 +13,69 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAPI } from 'src/contexts/ApiContext';
 
-const Loading = ({ open }) => {
-  console.log('loading');
-  return (
-    <Backdrop
-      open={open}
-      sx={{
-        color: '#fff',
-        zIndex: (theme) => theme.zIndex.drawer + 10
-      }}
-    >
-      <Box
-        sx={{
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%'
-        }}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <CircularProgress size={64} disableShrink thickness={3} />
-        <Typography>Please Wait 🔥</Typography>
-      </Box>
-    </Backdrop>
-  );
-};
+// const Loading = () => {
+//   console.log('loading');
+//   return (
+//     <Backdrop
+//       // open={open}
+//       sx={{
+//         color: '#fff',
+//         zIndex: (theme) => theme.zIndex.drawer + 100
+//       }}
+//     >
+//       <Box
+//         sx={{
+//           position: 'fixed',
+//           left: 0,
+//           top: 0,
+//           width: '100%',
+//           height: '100%'
+//         }}
+//         display="flex"
+//         flexDirection="column"
+//         alignItems="center"
+//         justifyContent="center"
+//       >
+//         <CircularProgress size={64} disableShrink thickness={3} />
+//         <Typography>Please Wait 🔥</Typography>
+//       </Box>
+//     </Backdrop>
+//   );
+// };
 
 const SidebarLayout = () => {
   const theme = useTheme();
 
   const { isLoading } = useAPI();
-  // console.log('from layout', isLoading);
+  console.log('from layout', isLoading);
   // console.log('from layout', prokers);
 
   return (
     <>
+      {/* <Backdrop
+        open={isLoading}
+        sx={{
+          color: '#fff',
+          zIndex: (theme) => theme.zIndex.drawer + 100
+        }}
+      >
+        <Box
+          sx={{
+            position: 'fixed',
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%'
+          }}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress size={64} disableShrink thickness={3} />
+          <Typography>Please Wait 🔥</Typography>
+        </Box>
+      </Backdrop> */}
       <Box
         sx={{
           flex: 1,
@@ -79,31 +103,28 @@ const SidebarLayout = () => {
           }
         }}
       >
-        {isLoading ? (
-          <Loading open={isLoading} />
-        ) : (
-          <>
-            <Sidebar />
-            <Header />
-            <Box
-              sx={{
-                position: 'relative',
-                zIndex: 5,
-                display: 'block',
-                flex: 1,
-                pt: `${theme.header.height}`,
-                [theme.breakpoints.up('lg')]: {
-                  ml: `${theme.sidebar.width}`
-                }
-              }}
-            >
-              <Box display="block">
-                {/* <Loading open={isLoading} /> */}
-                <Outlet />
-              </Box>
+        <>
+          <Sidebar />
+          <Header />
+          <Box
+            sx={{
+              position: 'relative',
+              zIndex: 5,
+              display: 'block',
+              flex: 1,
+              pt: `${theme.header.height}`,
+              [theme.breakpoints.up('lg')]: {
+                ml: `${theme.sidebar.width}`
+              }
+            }}
+          >
+            <Box display="block">
+              {/* <Loading open={isLoading} /> */}
+              <Outlet />
             </Box>
-          </>
-        )}
+            {/* )} */}
+          </Box>
+        </>
       </Box>
     </>
   );

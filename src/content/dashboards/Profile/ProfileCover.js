@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
   Typography,
   Card,
@@ -9,7 +9,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Skeleton
 } from '@mui/material';
 
 import {
@@ -19,18 +20,30 @@ import {
   PermIdentity,
   School
 } from '@mui/icons-material';
+import { useAPI } from 'src/contexts/ApiContext';
 
-const ProfileCover = ({ user }) => {
+const ProfileCover = () => {
+  const { user, isLoading } = useAPI();
+  console.log('user', user);
+
   return (
     <>
       <Card>
         <CardActionArea disabled>
-          <CardMedia
-            component="img"
-            height="auto"
-            image="/static/images/avatars/4.jpg"
-            alt="green iguana"
-          />
+          {isLoading ? (
+            <Skeleton
+              sx={{ height: 250 }}
+              animation="wave"
+              variant="rectangular"
+            />
+          ) : (
+            <CardMedia
+              component="img"
+              height="auto"
+              image="/static/images/avatars/4.jpg"
+              alt="green iguana"
+            />
+          )}
           <CardContent
             sx={{
               display: 'flex',
@@ -38,8 +51,12 @@ const ProfileCover = ({ user }) => {
               gap: '12px'
             }}
           >
-            <Typography gutterBottom variant="h3" component="div">
-              {user.name}
+            <Typography gutterBottom variant="h3">
+              {isLoading ? (
+                <Skeleton animation="wave" />
+              ) : (
+                `${user?.data?.data?.nama}`
+              )}
             </Typography>
             <Divider />
             <List
@@ -51,33 +68,128 @@ const ProfileCover = ({ user }) => {
             >
               <ListItem disablePadding>
                 <ListItemIcon>
-                  <PermIdentity />
+                  {isLoading ? (
+                    <Skeleton
+                      animation="wave"
+                      variant="circular"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <PermIdentity />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="201620370311041" />
+                <ListItemText disableTypography>
+                  {isLoading ? (
+                    <>
+                      <Typography variant="subtitle2">
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    </>
+                  ) : (
+                    `${user?.data?.data?.nim}`
+                  )}
+                </ListItemText>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemIcon>
-                  <Call />
+                  {isLoading ? (
+                    <Skeleton
+                      animation="wave"
+                      variant="circular"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <Call />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="081232620494" />
+                <ListItemText disableTypography>
+                  {isLoading ? (
+                    <>
+                      <Typography variant="subtitle2">
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    </>
+                  ) : (
+                    `${user?.data?.data?.nilai}`
+                  )}
+                </ListItemText>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemIcon>
-                  <Cake />
+                  {isLoading ? (
+                    <Skeleton
+                      animation="wave"
+                      variant="circular"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <Cake />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Jombang, 08 Juni 1998" />
+                <ListItemText disableTypography>
+                  {isLoading ? (
+                    <>
+                      <Typography variant="subtitle2">
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    </>
+                  ) : (
+                    `${user?.data?.data?.nim}`
+                  )}
+                </ListItemText>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemIcon>
-                  <School />
+                  {isLoading ? (
+                    <Skeleton
+                      animation="wave"
+                      variant="circular"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <School />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Fakultas Teknik" />
+                <ListItemText disableTypography>
+                  {isLoading ? (
+                    <>
+                      <Typography variant="subtitle2">
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    </>
+                  ) : (
+                    `${user?.data?.data?.fakultas}`
+                  )}
+                </ListItemText>
               </ListItem>
               <ListItem disablePadding>
                 <ListItemIcon>
-                  <Lightbulb />
+                  {isLoading ? (
+                    <Skeleton
+                      animation="wave"
+                      variant="circular"
+                      width={16}
+                      height={16}
+                    />
+                  ) : (
+                    <Lightbulb />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Teknik Informatika" />
+                <ListItemText disableTypography>
+                  {isLoading ? (
+                    <>
+                      <Typography variant="subtitle2">
+                        <Skeleton animation="wave" />
+                      </Typography>
+                    </>
+                  ) : (
+                    `${user?.data?.data?.jurusan}`
+                  )}
+                </ListItemText>
               </ListItem>
             </List>
           </CardContent>
@@ -87,9 +199,9 @@ const ProfileCover = ({ user }) => {
   );
 };
 
-ProfileCover.propTypes = {
-  // @ts-ignore
-  user: PropTypes.object.isRequired
-};
+// ProfileCover.propTypes = {
+//   // @ts-ignore
+//   user: PropTypes.object.isRequired
+// };
 
 export default ProfileCover;

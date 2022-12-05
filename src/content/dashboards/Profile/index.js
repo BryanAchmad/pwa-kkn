@@ -10,7 +10,8 @@ import {
   Tabs,
   Tab,
   Typography,
-  Box
+  Box,
+  Skeleton
 } from '@mui/material';
 // import {
 //   Inbox as InboxIcon,
@@ -23,6 +24,7 @@ import {
 // } from '@mui/icons-material';
 import ProfileCover from './ProfileCover';
 import Aktivitas from './Tabs/Aktivitas';
+import { useAPI } from 'src/contexts/ApiContext';
 // import RecentActivity from './RecentActivity';
 // import Feed from './Feed';
 // import PopularTags from './PopularTags';
@@ -51,28 +53,27 @@ const TabsWrapper = styled(Tabs)(
 // );
 
 const UserAccount = () => {
+  const { isLoading } = useAPI();
   const [currentTab, setCurrentTab] = useState('history');
   const tabs = [
     { value: 'history', label: 'History Login' },
     { value: 'activity', label: 'Aktivitas Terakhir' }
   ];
 
- 
-
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
   };
-  const user = {
-    savedCards: 7,
-    name: 'Catherine Pike',
-    coverImg: '/static/images/placeholders/covers/5.jpg',
-    avatar: '/static/images/avatars/4.jpg',
-    description:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
-    jobtitle: 'Web Developer',
-    location: 'Barcelona, Spain',
-    followers: '465'
-  };
+  // const user1 = {
+  //   savedCards: 7,
+  //   name: 'Catherine Pike',
+  //   coverImg: '/static/images/placeholders/covers/5.jpg',
+  //   avatar: '/static/images/avatars/4.jpg',
+  //   description:
+  //     "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
+  //   jobtitle: 'Web Developer',
+  //   location: 'Barcelona, Spain',
+  //   followers: '465'
+  // };
 
   return (
     <>
@@ -96,67 +97,88 @@ const UserAccount = () => {
                 borderRadius: '16px'
               }}
             >
-              <Typography variant="h2" component="h2" gutterBottom>
-                Selamat Datang Di Sistem Informasi KKN
-              </Typography>
-              <Typography variant="subtitle2">
-                UNIVERSITAS MUHAMMADIYAH MALANG
-              </Typography>
+              {/* {isLoading ? (
+                <>
+                  <Typography variant="h2" component="h2" gutterBottom>
+                    Selamat Datang Di Sistem Informasi KKN
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    UNIVERSITAS MUHAMMADIYAH MALANG
+                  </Typography>
+                </>
+              ) : ( */}
+              <>
+                <Typography variant="h2" component="h2" gutterBottom>
+                  {isLoading ? (
+                    <Skeleton animation="wave" />
+                  ) : (
+                    'Selamat Datang Di Sistem Informasi KKN'
+                  )}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {isLoading ? (
+                    <Skeleton animation="wave" />
+                  ) : (
+                    'UNIVERSITAS MUHAMMADIYAH MALANG'
+                  )}
+                </Typography>
+              </>
+              {/* )} */}
             </Box>
           </Grid>
 
           <Grid item xs={3}>
-            <ProfileCover user={user} />
+            <ProfileCover />
           </Grid>
           <Grid item xs={9}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <TabsWrapper
-                  sx={{
-                    height: 'auto',
-                    padding: '12px',
-                    borderRadius: '12px'
-                  }}
-                  onChange={handleTabsChange}
-                  value={currentTab}
-                  variant="scrollable"
-                  scrollButtons="auto"
-                  textColor="primary"
-                  indicatorColor="primary"
-                >
-                  {tabs.map((tab) => (
-                    <Tab key={tab.value} label={tab.label} value={tab.value} />
-                  ))}
-                </TabsWrapper>
+                {isLoading ? (
+                  <Skeleton
+                    animation="wave"
+                    height={80}
+                    sx={{ margin: 0, padding: 0 }}
+                  />
+                ) : (
+                  <TabsWrapper
+                    sx={{
+                      height: 'auto',
+                      padding: '12px',
+                      borderRadius: '12px'
+                    }}
+                    onChange={handleTabsChange}
+                    value={currentTab}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    textColor="primary"
+                    indicatorColor="primary"
+                  >
+                    {tabs.map((tab) => (
+                      <Tab
+                        key={tab.value}
+                        label={tab.label}
+                        value={tab.value}
+                      />
+                    ))}
+                  </TabsWrapper>
+                )}
               </Grid>
               <Grid item xs={12}>
-                {currentTab === 'history' && <History />}
-                {currentTab === 'activity' && <Aktivitas />}
+                {isLoading ? (
+                  <Skeleton
+                    animation="wave"
+                    height={300}
+                    sx={{ marginTop: -10, padding: 0 }}
+                  />
+                ) : (
+                  <>
+                    {currentTab === 'history' && <History />}
+                    {currentTab === 'activity' && <Aktivitas />}
+                  </>
+                )}
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={9}>
-            {/* {currentTab === 'activity' && (
-                            <EkonomiTab data={ekonomi} />
-                        )} */}
-            {/* {{currentTab === 'notifications' && <NotificationsTab />}
-                        {currentTab === 'security' && <SecurityTab />} */}
-          </Grid>
-          {/* <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid> */}
-          {/* <Grid item xs={12} md={8}>
-            <Feed />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularTags />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <MyCards />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            <Addresses />
-          </Grid> */}
         </Grid>
       </Container>
       <Footer />
