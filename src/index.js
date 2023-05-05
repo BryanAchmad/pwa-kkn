@@ -6,22 +6,25 @@ import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
-import { AuthProvider } from 'src/contexts/AuthProvider';
+import { AuthProvider } from 'src/contexts/AuthContext';
 import { ApiProvider } from './contexts/ApiContext';
+// import { RestProvider } from './contexts/RestContext';
 
 ReactDOM.render(
-  <HelmetProvider>
-    <SidebarProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <ApiProvider>
-            <App />
-          </ApiProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </SidebarProvider>
-  </HelmetProvider>,
-  document.getElementById('root')
+    <HelmetProvider>
+        <SidebarProvider>
+            <BrowserRouter>
+                <AuthProvider>
+                    {/* <RestProvider> */}
+                    <ApiProvider>
+                        <App />
+                    </ApiProvider>
+                    {/* </RestProvider> */}
+                </AuthProvider>
+            </BrowserRouter>
+        </SidebarProvider>
+    </HelmetProvider>,
+    document.getElementById('root')
 );
 
 serviceWorker.register();

@@ -1,4 +1,4 @@
-import { Suspense, lazy, useContext } from 'react';
+import { Suspense, lazy } from 'react';
 // import { Navigate } from 'react-router-dom';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
@@ -8,17 +8,24 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import { Navigate } from 'react-router';
 
 const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+    (
+        <Suspense fallback={<SuspenseLoader />}>
+            <Component {...props} />
+        </Suspense>
+    );
 
-import AuthContext from './contexts/AuthProvider';
+// import AuthContext from './contexts/AuthProvider';
 
-const PublicRoute = () => {
-  const auth = useContext(Au)
-}
+// const PublicRoute = () => {
+//   const auth = useContext(AuthContext);
+
+//   return !auth.auth ? <Outlet /> : <Navigate to="/" replace />;
+// };
+
+// const ProtectedRoute = () => {
+//   const auth = useContext(AuthContext);
+//   return auth.auth ? <Outlet /> : <Navigate to="/login" replace />;
+// };
 // Pages
 
 // const Overview = Loader(lazy(() => import('src/content/overview')));
@@ -67,24 +74,24 @@ const PublicRoute = () => {
 // const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
 
 const ProfilePage = Loader(
-  lazy(() => import('src/content/dashboards/Profile'))
+    lazy(() => import('src/content/dashboards/Profile'))
 );
 
 const Kelompok = Loader(lazy(() => import('src/content/dashboards/Kelompok')));
 const ProgramKerja = Loader(
-  lazy(() => import('src/content/dashboards/ProgramKerja/Index'))
+    lazy(() => import('src/content/dashboards/ProgramKerja/Index'))
 );
 const DetailsProgramKerja = Loader(
-  lazy(() => import('src/content/dashboards/ProgramKerja/Details'))
+    lazy(() => import('src/content/dashboards/ProgramKerja/Details'))
 );
 const LaporanAkhir = Loader(
-  lazy(() => import('src/content/dashboards/Laporan/LaporanAkhir'))
+    lazy(() => import('src/content/dashboards/Laporan/LaporanAkhir'))
 );
 const ProfilDesa = Loader(
-  lazy(() => import('src/content/dashboards/Laporan/ProfilDesa'))
+    lazy(() => import('src/content/dashboards/Laporan/ProfilDesa'))
 );
 const MediaPublikasi = Loader(
-  lazy(() => import('src/content/dashboards/Laporan/MediaPublikasi'))
+    lazy(() => import('src/content/dashboards/Laporan/MediaPublikasi'))
 );
 
 // Auth
@@ -108,219 +115,228 @@ const RegisterPage = Loader(lazy(() => import('src/content/auth/Register')));
 // );
 
 const routes = [
-  // {
-  //   path: '',
-  //   element: <BaseLayout />,
-  //   children: [
-  //     {
-  //       path: '/',
-  //       element: <Overview />
-  //     },
-  //     {
-  //       path: 'overview',
-  //       element: <Navigate to="/" replace />
-  //     },
-  //     {
-  //       path: 'status',
-  //       children: [
-  //         {
-  //           path: '',
-  //           element: <Navigate to="404" replace />
-  //         },
-  //         {
-  //           path: '404',
-  //           element: <Status404 />
-  //         },
-  //         {
-  //           path: '500',
-  //           element: <Status500 />
-  //         },
-  //         {
-  //           path: 'maintenance',
-  //           element: <StatusMaintenance />
-  //         },
-  //         {
-  //           path: 'coming-soon',
-  //           element: <StatusComingSoon />
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: '*',
-  //       element: <Status404 />
-  //     }
-  //   ]
-  // },
-  {
-    path: 'login',
-    element: <LoginPage />
-  },
-  {
-    path: 'register',
-    element: <RegisterPage />
-  },
-  {
-    path: '',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '/',
-        element: (
-          <>
-            <ProfilePage />
-          </>
-        )
-      },
-      { path: 'dashboard', element: <Navigate to="/" replace /> }
-    ]
-  },
-  {
-    path: 'kelompok',
-    element: <SidebarLayout />,
-    children: [
-      {
+    // {
+    //   path: '',
+    //   element: <BaseLayout />,
+    //   children: [
+    //     {
+    //       path: '/',
+    //       element: <Overview />
+    //     },
+    //     {
+    //       path: 'overview',
+    //       element: <Navigate to="/" replace />
+    //     },
+    //     {
+    //       path: 'status',
+    //       children: [
+    //         {
+    //           path: '',
+    //           element: <Navigate to="404" replace />
+    //         },
+    //         {
+    //           path: '404',
+    //           element: <Status404 />
+    //         },
+    //         {
+    //           path: '500',
+    //           element: <Status500 />
+    //         },
+    //         {
+    //           path: 'maintenance',
+    //           element: <StatusMaintenance />
+    //         },
+    //         {
+    //           path: 'coming-soon',
+    //           element: <StatusComingSoon />
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       path: '*',
+    //       element: <Status404 />
+    //     }
+    //   ]
+    // },
+    {
+        path: 'login',
+        element: <LoginPage />
+    },
+    {
+        path: 'register',
+        element: <RegisterPage />
+    },
+    {
         path: '',
-        element: <Kelompok />
-      }
-    ]
-  },
-  {
-    path: 'pembimbing',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Kelompok />
-      }
-    ]
-  },
-  {
-    path: 'program-kerja',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <ProgramKerja />
-      },
-      {
-        path: 'details',
-        element: <DetailsProgramKerja />
-      }
-    ]
-  },
-  {
-    path: 'laporan',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: 'laporan-akhir',
-        element: <LaporanAkhir />
-      },
-      {
-        path: 'profil-desa',
-        element: <ProfilDesa />
-      },
-      {
-        path: 'media-publikasi',
-        element: <MediaPublikasi />
-      }
-    ]
-  }
-  // {
-  //   path: '',
-  //   element: <SidebarLayout />,
-  //   children: [
-  //     {
-  //       path: '/',
-  //       element: <Tasks />
-  //     },
-  //     {
-  //       path: 'tasks',
-  //       element: <Navigate to="tasks" replace />
-  //     },
-  //     {
-  //       path: 'messenger',
-  //       element: <Messenger />
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: 'management',
-  //   element: <SidebarLayout />,
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <Navigate to="transactions" replace />
-  //     },
-  //     {
-  //       path: 'transactions',
-  //       element: <Transactions />
-  //     },
-  //     {
-  //       path: 'profile',
-  //       children: [
-  //         {
-  //           path: '',
-  //           element: <Navigate to="details" replace />
-  //         },
-  //         {
-  //           path: 'details',
-  //           element: <UserProfile />
-  //         },
-  //         {
-  //           path: 'settings',
-  //           element: <UserSettings />
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/components',
-  //   element: <SidebarLayout />,
-  //   children: [
-  //     {
-  //       path: '',
-  //       element: <Navigate to="buttons" replace />
-  //     },
-  //     {
-  //       path: 'buttons',
-  //       element: <Buttons />
-  //     },
-  //     {
-  //       path: 'modals',
-  //       element: <Modals />
-  //     },
-  //     {
-  //       path: 'accordions',
-  //       element: <Accordions />
-  //     },
-  //     {
-  //       path: 'tabs',
-  //       element: <Tabs />
-  //     },
-  //     {
-  //       path: 'badges',
-  //       element: <Badges />
-  //     },
-  //     {
-  //       path: 'tooltips',
-  //       element: <Tooltips />
-  //     },
-  //     {
-  //       path: 'avatars',
-  //       element: <Avatars />
-  //     },
-  //     {
-  //       path: 'cards',
-  //       element: <Cards />
-  //     },
-  //     {
-  //       path: 'forms',
-  //       element: <Forms />
-  //     }
-  //   ]
-  // }
+        element: <SidebarLayout />,
+        private: true,
+        children: [
+            {
+                path: '/',
+                element: <ProfilePage />,
+                private: true
+            },
+            {
+                path: 'dashboard',
+                element: <Navigate to="/" replace />,
+                private: true
+            }
+        ]
+    },
+    {
+        path: 'kelompok',
+        element: <SidebarLayout />,
+        children: [
+            {
+                path: '',
+                element: <Kelompok />,
+                private: true
+            }
+        ]
+    },
+    {
+        path: 'pembimbing',
+        element: <SidebarLayout />,
+        children: [
+            {
+                path: '',
+                element: <Kelompok />,
+                private: true
+            }
+        ]
+    },
+    {
+        path: 'program-kerja',
+        element: <SidebarLayout />,
+        children: [
+            {
+                path: '',
+                element: <ProgramKerja />,
+                private: true
+            },
+            {
+                path: 'details',
+                element: <DetailsProgramKerja />,
+                private: true
+            }
+        ]
+    },
+    {
+        path: 'laporan',
+        element: <SidebarLayout />,
+        children: [
+            {
+                path: 'laporan-akhir',
+                element: <LaporanAkhir />,
+                private: true
+            },
+            {
+                path: 'profil-desa',
+                element: <ProfilDesa />,
+                private: true
+            },
+            {
+                path: 'media-publikasi',
+                element: <MediaPublikasi />,
+                private: true
+            }
+        ]
+    }
+    // {
+    //   path: '',
+    //   element: <SidebarLayout />,
+    //   children: [
+    //     {
+    //       path: '/',
+    //       element: <Tasks />
+    //     },
+    //     {
+    //       path: 'tasks',
+    //       element: <Navigate to="tasks" replace />
+    //     },
+    //     {
+    //       path: 'messenger',
+    //       element: <Messenger />
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: 'management',
+    //   element: <SidebarLayout />,
+    //   children: [
+    //     {
+    //       path: '',
+    //       element: <Navigate to="transactions" replace />
+    //     },
+    //     {
+    //       path: 'transactions',
+    //       element: <Transactions />
+    //     },
+    //     {
+    //       path: 'profile',
+    //       children: [
+    //         {
+    //           path: '',
+    //           element: <Navigate to="details" replace />
+    //         },
+    //         {
+    //           path: 'details',
+    //           element: <UserProfile />
+    //         },
+    //         {
+    //           path: 'settings',
+    //           element: <UserSettings />
+    //         }
+    //       ]
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: '/components',
+    //   element: <SidebarLayout />,
+    //   children: [
+    //     {
+    //       path: '',
+    //       element: <Navigate to="buttons" replace />
+    //     },
+    //     {
+    //       path: 'buttons',
+    //       element: <Buttons />
+    //     },
+    //     {
+    //       path: 'modals',
+    //       element: <Modals />
+    //     },
+    //     {
+    //       path: 'accordions',
+    //       element: <Accordions />
+    //     },
+    //     {
+    //       path: 'tabs',
+    //       element: <Tabs />
+    //     },
+    //     {
+    //       path: 'badges',
+    //       element: <Badges />
+    //     },
+    //     {
+    //       path: 'tooltips',
+    //       element: <Tooltips />
+    //     },
+    //     {
+    //       path: 'avatars',
+    //       element: <Avatars />
+    //     },
+    //     {
+    //       path: 'cards',
+    //       element: <Cards />
+    //     },
+    //     {
+    //       path: 'forms',
+    //       element: <Forms />
+    //     }
+    //   ]
+    // }
 ];
 
 export default routes;

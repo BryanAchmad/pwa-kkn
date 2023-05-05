@@ -1,17 +1,24 @@
 import { useRoutes } from 'react-router-dom';
-import router from 'src/router';
+import { Navigate } from 'react-router';
+
+// import router from 'src/router';
 // import PropTypes from 'prop-types';
+import router from './router';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 import {
-  // Backdrop,
-  // CircularProgress,
-  CssBaseline
-  // Typography
+    // Backdrop,
+    // CircularProgress,
+    CssBaseline
+    // Typography
 } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
+import { useAuthentication } from 'src/contexts/AuthContext';
+// import Router from './router/routes';
+// import { useRoutes } from 'react-router';
+// import { AuthProvider } from './contexts/AuthProvider';
 // import { useAPI } from './contexts/ApiContext';
 // import { Box } from '@mui/system';
 // import ApiContext from './contexts/ApiContext';
@@ -62,75 +69,102 @@ import ThemeProvider from './theme/ThemeProvider';
 // };
 
 function App() {
-  // const [status, setStatus] = useState(false);
+    const useAuthRoutes = (routes) => {
+        const { isAuthenticated } = useAuthentication();
+        console.log('auth', isAuthenticated);
+        // const Navigate = useNavigate();
+        const isAuth = isAuthenticated; /* your authentication logic here */
 
-  // const setIsLoaded = (stat) => {
-  //   setStatus(stat);
-  // };
+        return useRoutes(
+            routes.map((route) => {
+                console.log('route', route.path);
+                if (route.private) {
+                    return {
+                        ...route,
+                        element: isAuthenticated ? (
+                            route.element
+                        ) : (
+                            <Navigate to="/login" replace />
+                        )
+                    };
+                }
+                return route;
+            })
+        );
+    };
+    // const content = useRoutes(router);
+    const element = useAuthRoutes(router);
+    console.log(element);
+    // const [status, setStatus] = useState(false);
 
-  // const isLoaded = () => {
-  //   return status;
-  // };
+    // const setIsLoaded = (stat) => {
+    //   setStatus(stat);
+    // };
 
-  // if (!status) return
-  // const [loading, setLoading] = useState(false);
-  // const { proker, prokers, fetching } = useProkerData();
-  // const { prokers, divisi, mediaPub, user } = useProkerData(setIsLoaded());
-  // console.log('from app', prokers);
-  const content = useRoutes(router);
+    // const isLoaded = () => {
+    //   return status;
+    // };
 
-  // const setIsLoaded = (value) => {
-  //   setIsFetching(value);
-  // };
+    // if (!status) return
+    // const [loading, setLoading] = useState(false);
+    // const { proker, prokers, fetching } = useProkerData();
+    // const { prokers, divisi, mediaPub, user } = useProkerData(setIsLoaded());
+    // console.log('from app', prokers);
+    // const content = useRoutes(router);
 
-  // const isLoaded = () => {
-  //   return isFetching;
-  // };
+    // const setIsLoaded = (value) => {
+    //   setIsFetching(value);
+    // };
 
-  // const handleStatus = () => {
-  //   if (proker === undefined && prokers === undefined) {
-  //     setLoading(true);
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // };
+    // const isLoaded = () => {
+    //   return isFetching;
+    // };
 
-  // if (!isLoaded) return <LoadingScreen />;
+    // const handleStatus = () => {
+    //   if (proker === undefined && prokers === undefined) {
+    //     setLoading(true);
+    //   } else {
+    //     setLoading(false);
+    //   }
+    // };
 
-  // const getToken = () => {
-  //   const tokenString = sessionStorage.getItem('access_token');
-  //   const userToken = JSON.parse(tokenString);
-  //   console.log(userToken);
-  //   return userToken;
-  // };
+    // if (!isLoaded) return <LoadingScreen />;
 
-  // const setToken = (userToken) => {
-  //   sessionStorage.setItem('access_token', JSON.stringify(userToken));
-  // };
-  // const [token, setToken] = useState();
-  // const token = getToken();
+    // const getToken = () => {
+    //   const tokenString = sessionStorage.getItem('access_token');
+    //   const userToken = JSON.parse(tokenString);
+    //   console.log(userToken);
+    //   return userToken;
+    // };
 
-  // if (!token) return <LoginPage setToken={setToken} />;
-  // const { isLoading } = useAPI();
+    // const setToken = (userToken) => {
+    //   sessionStorage.setItem('access_token', JSON.stringify(userToken));
+    // };
+    // const [token, setToken] = useState();
+    // const token = getToken();
 
-  // if (isLoading) {
-  //   return <LoadingScreen />;
-  // }
+    // if (!token) return <LoginPage setToken={setToken} />;
+    // const { isLoading } = useAPI();
 
-  return (
-    <>
-      {/* {isLoading ? (
+    // if (isLoading) {
+    //   return <LoadingScreen />;
+    // }
+
+    return (
+        <>
+            {/* {isLoading ? (
         <LoadingScreen open={isLoading} />
       ) : ( */}
-      <ThemeProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
-          {content}
-        </LocalizationProvider>
-      </ThemeProvider>
-      {/* )} */}
-    </>
-  );
+            <ThemeProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <CssBaseline />
+                    {element}
+                    {/* <Router /> */}
+                </LocalizationProvider>
+            </ThemeProvider>
+            {/* )} */}
+        </>
+    );
 }
 export default App;
 

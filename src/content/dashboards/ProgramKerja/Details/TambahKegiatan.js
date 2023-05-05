@@ -22,6 +22,8 @@ import { LoadingButton } from '@mui/lab';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone';
+// import { useAPI } from 'src/contexts/ApiContext'
+// import { useContext } from 'react';
 
 const style = {
   position: 'absolute',
@@ -35,6 +37,7 @@ const style = {
 };
 
 function TambahKegiatan({ reload, idProker, isLoading }) {
+  // const  {addNewData}= useAPI();
   const formData = new FormData();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -120,6 +123,7 @@ function TambahKegiatan({ reload, idProker, isLoading }) {
       })
       .finally(() => {
         setIsOpen(false);
+        
         reload();
       });
   };

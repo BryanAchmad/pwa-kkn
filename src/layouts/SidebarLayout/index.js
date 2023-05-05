@@ -2,7 +2,8 @@ import {
   Box,
   alpha,
   lighten,
-  useTheme
+  useTheme,
+  // Typography
   // CircularProgress,
   // Backdrop,
   // Typography
@@ -76,6 +77,7 @@ const SidebarLayout = () => {
           <Typography>Please Wait 🔥</Typography>
         </Box>
       </Backdrop> */}
+
       <Box
         sx={{
           flex: 1,
@@ -104,6 +106,7 @@ const SidebarLayout = () => {
         }}
       >
         <>
+          
           <Sidebar />
           <Header />
           <Box

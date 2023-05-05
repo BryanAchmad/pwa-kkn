@@ -42,6 +42,7 @@ const ProfileCover = () => {
               height="auto"
               image="/static/images/avatars/4.jpg"
               alt="green iguana"
+              loading="lazy"
             />
           )}
           <CardContent

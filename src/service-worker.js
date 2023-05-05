@@ -7,11 +7,14 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+import { Queue } from 'workbox-background-sync';
 import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+
+const queue = new Queue('dataQueue');
 
 clientsClaim();
 
@@ -90,6 +93,37 @@ registerRoute(
     ]
   })
 );
+
+self.addEventListener('fetch', (event) => {
+  // Add in your own criteria here to return early if this
+  // isn't a request that should use background sync.
+  if (event.request.method !== 'POST') {
+    return;
+  }
+
+  const bgSyncLogic = async () => {
+    try {
+      const response = await fetch(event.request.clone());
+      return response;
+    } catch (error) {
+      await queue.pushRequest({ request: event.request });
+      return error;
+    }
+  };
+
+  event.respondWith(bgSyncLogic());
+});
+// registerRoute(
+//   ({ url }) => url.pathname === '/proker/',
+//   new NetworkOnly({
+//     plugins: [
+//       new BackgroundSyncPlugin('prokerQueue', {
+//         maxRetentionTime: 24 * 60
+//       })
+//     ]
+//   }),
+//   'POST'
+// );
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
