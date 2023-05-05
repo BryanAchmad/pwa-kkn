@@ -73,7 +73,7 @@ function App() {
         const { isAuthenticated } = useAuthentication();
         console.log('auth', isAuthenticated);
         // const Navigate = useNavigate();
-        const isAuth = isAuthenticated; /* your authentication logic here */
+        // const isAuth = isAuthenticated; /* your authentication logic here */
 
         return useRoutes(
             routes.map((route) => {
