@@ -13,6 +13,7 @@ export const login = async (data) => {
         pic
     });
 
+    console.log(response);
     const token = response?.data?.access_token;
     if (token) {
         localStorage.setItem('user', JSON.stringify(response?.data));
@@ -21,14 +22,18 @@ export const login = async (data) => {
     return response.data;
 };
 
-export const isAuthenticated = () => {
-  const user = localStorage.getItem('user');
-  if(!user) {
-    return {};
-  }
+// export const isAuthenticated = () => {
+//     const user = localStorage.getItem('user');
 
-  return JSON.parse(user);
-}
+//     console.log(user);
+//     if (!user) {
+//         return {};
+//     }
+
+//     const userData = JSON.parse(user);
+
+//     return userData;
+// };
 
 // export const login = async (username, password) => {
 //     const [user, setUser] = useState();

@@ -1,7 +1,10 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'src/api/axios';
-import { getProkerReq } from 'src/api/proker';
+// import { getProkerReq } from 'src/api/proker';
 import { useAuthentication } from './AuthContext';
+import { useRef } from 'react';
+// import { useConnection } from './ConnectionContext';
+// import { isAuthenticated } from 'src/api/auth';
 
 const ApiContext = createContext();
 
@@ -10,7 +13,14 @@ const ApiContext = createContext();
 // };
 
 export const ApiProvider = ({ children }) => {
-    const { isAuthenticated } = useAuthentication();
+    // const { isConnected } = useConnection();
+    // const prevConnectedStatus = useRef(isConnected);
+    // const authCheck = isAuthenticated();
+    const { authenticated, currentUser } = useAuthentication();
+    // const datajson = JSON.stringify(currentUser);
+    console.log("user", currentUser);
+    // console.log("_id", datajson);
+    const prevAuthRef = useRef(authenticated);
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [prokers, setProkers] = useState();
     const [divisi, setDivisi] = useState();
@@ -22,103 +32,84 @@ export const ApiProvider = ({ children }) => {
 
     const id = '63734f0c41bfdb7ca8fbe819';
     const kelompok = '10';
-    const userId = '63734e7741bfdb7ca8fbe817';
+    const userId = currentUser;
 
-    //   const fetchProker = axios.get(`/proker/${id}`);
-    //   const fetchDivisi = axios.get(`/divisi`);
-    //   const fetchMedia = axios.get(`/media/${kelompok}`);
-    //   const fetchUser = axios.get(`/mahasiswa/details/${userId}`);
 
-    // const fetchAll = useCallback(async () => {
-    //   // if (authContext.auth === true) {
-    //   setIsLoading(true);
-    //   console.log('from fetchAll', isLoading);
-    //   const result = (
-    //     await Promise.all([
-    //       getProkerReq(id),
-    //       axios.get(`/divisi`),
-    //       axios.get(`/media/${kelompok}`),
-    //       axios.get(`/mahasiswa/details/${userId}`)
-    //     ])
-    //   ).map((r) => r);
-    //   console.log('promise result', result);
-
-    //   const [prokerResult, divisiResult, mediaResult, userResult] =
-    //     await Promise.all(result);
-
-    //   setProkers(prokerResult);
-    //   setDivisi(divisiResult);
-    //   setMedia(mediaResult);
-    //   setUser(userResult);
-    //   setIsLoading(false);
-    //   // }
-    // }, []);
-
-    // const handleFetch = () => {
-    //   setIsLoading(true);
-    //   fetchAll();
-    //   setIsLoading(false);
-    // };
-    useEffect(() => {
-        if (isAuthenticated || hasNewData) {
+    const fetchData = async () => {
+        const token = localStorage.getItem('token');
+        if (token && authenticated) {
+            setIsLoading(true);
             setIsFetching(true);
-            const result = Promise.all([
-                getProkerReq(id),
-                axios.get(`/divisi`),
-                axios.get(`/media/${kelompok}`),
-                axios.get(`/mahasiswa/details/${userId}`)
-            ]).map((r) => r);
-            console.log('promise result', result);
+            console.log('from fetchAll', isLoading);
 
             const [prokerResult, divisiResult, mediaResult, userResult] =
-                Promise.all(result);
+                await Promise.all([
+                    axios.get(`/proker/${id}`),
+                    axios.get(`/divisi`),
+                    axios.get(`/media/${kelompok}`),
+                    axios.get(`/mahasiswa/details/${userId}`)
+                ]);
+            // const result = (
+            //   await Promise.all([
+            //     getProkerReq(id),
+            //     axios.get(`/divisi`),
+            //     axios.get(`/media/${kelompok}`),
+            //     axios.get(`/mahasiswa/details/${userId}`)
+            //   ])
+            // ).map((r) => r);
+            // console.log('promise result', result);
 
+            // const [prokerResult, divisiResult, mediaResult, userResult] =
+            //   await Promise.all(result);
+
+            console.log('result => ', userResult);
             setProkers(prokerResult);
             setDivisi(divisiResult);
             setMedia(mediaResult);
             setUser(userResult);
-            setIsLoading(false);
             setIsFetching(false);
-            setHasNewData(false);
+            setIsLoading(false);
         }
-        // fetchAll();
-    }, [isAuthenticated, hasNewData]);
+    };
+
+    useEffect(() => {
+        if (prevAuthRef.current != authenticated) {
+            fetchData();
+        }
+
+        prevAuthRef.current = authenticated;
+    }, [authenticated]);
+
+    useEffect(() => {
+        if (hasNewData) {
+            fetchData();
+        }
+    }, [hasNewData]);
+
+    // useEffect(() => {
+    //     if (prevConnectedStatus.current === false && isConnected === true) {
+    //         fetchData();
+    //     }
+
+    //     prevAuthRef.current = isConnected;
+    // }, [isConnected]);
 
     console.log(prokers);
-
-    // const login = () => {
-    //   setIsLoggedIn(true);
-    // }
 
     const addNewData = () => {
         setHasNewData(true);
     };
 
-    // const updateProker = async (id, data) => {
-    //   try {
-    //     const response = await updateProkerReq(id, data);
-    //     if(!response)
-    //       throw new Error()
-
-    //     setProkers()
-    //   }
-    // }
-
-    // const value = { prokers, setProkers, divisi, media, user, isLoading };
-
     return (
         <ApiContext.Provider
             value={{
                 prokers,
-                // createProker,
                 isFetching,
                 divisi,
                 media,
                 user,
                 isLoading,
                 addNewData
-                // getProkers,
-                // fetchAll
             }}
         >
             {children}

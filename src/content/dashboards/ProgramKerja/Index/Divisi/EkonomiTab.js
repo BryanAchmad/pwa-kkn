@@ -36,7 +36,7 @@ function EkonomiTab({ data }) {
             boxShadow: 2
           }}
         >
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((proker, index) => (
               <Accordion key={index}>
                 <AccordionSummary

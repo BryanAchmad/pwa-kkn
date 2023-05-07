@@ -61,7 +61,7 @@ const TabsWrapper = styled(Tabs)(
 
 function ProgramKerja() {
   // const param = useParams();
-  const { divisi, prokers, fetchAll, isLoading } = useAPI();
+  const { divisi, prokers, isLoading, addNewData } = useAPI();
   console.log('prokers from useApi', prokers);
 
   // console.log('prokers', prokers.data.proker);
@@ -93,34 +93,7 @@ function ProgramKerja() {
     setLoadingButton(false);
     saveProker();
   };
-  // useEffect(() => {
-  //   setProgramKerja(getProkers(id));
-  // }, []);
-
-  // console.log(proker);
-
-  // const getDivisi = () => {
-  //   axios
-  //     .get(`https://kkn-umm.vercel.app/divisi`)
-  //     .then((response) => {
-  //       console.log(response.data.data);
-  //       setDivisi(response?.data?.data);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
-
-  // const Dropdown = ({ divisi }) => {
-  //   return (
-  //     <>
-  //       <MenuItem key={divisi._id} value={divisi.deskripsi}>
-  //         {divisi.value}
-  //       </MenuItem>
-  //     </>
-  //   );
-  // };
-
+  
   const saveProker = async () => {
     setLoadingButton(true);
     setEnableButton(true);
@@ -128,7 +101,7 @@ function ProgramKerja() {
     try {
       const send = await createProkerReq(id, dataProker);
       console.log(send);
-      fetchAll();
+      addNewData();
     } catch (e) {
       console.log(e);
       setLoadingButton(false);
@@ -138,26 +111,6 @@ function ProgramKerja() {
     }
   };
 
-  // const sendData = () => {
-  //   setLoadingButton(true);
-  //   setEnableButton(true);
-  //   axios
-  //     .post(`https://kkn-umm.vercel.app/proker/${id}`, dataProker)
-  //     .then((response) => {
-  //       console.log(response);
-  //       getDataProker();
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setLoadingButton(false);
-  //       setEnableButton(false);
-  //       getDataProker();
-  //     })
-  //     .finally(() => {
-  //       setOpen(false);
-  //     });
-  // };
-
   const handleChangeProker = (event) => {
     setDataProker({
       ...dataProker,
@@ -166,49 +119,11 @@ function ProgramKerja() {
     // console.log(dataProker);
   };
 
-  // const getDivisi = () => {
-  //   divisi?.data.map((div) => {
-  //     return div;
-  //   });
-  // };
-
-  // const getToken = () => {
-
-  // };
   const handleOpen = () => {
     setOpen(true);
     // getDivisi();
   };
   const handleClose = () => setOpen(false);
-
-  // const getDataProker = () => {
-  //   setSpinner(true);
-  //   axios
-  //     .get(`https://kkn-umm.vercel.app/proker/${id}`, {
-  //       headers: {
-  //         'x-access-token':
-  //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM3MzRmMzU0MWJmZGI3Y2E4ZmJlODFlIiwibmltIjoiMDQxIiwiaWF0IjoxNjY4NTg2NDQ2LCJleHAiOjE2Njg2NzI4NDZ9.WTPLTg-ODro1Yv75-CyD8pbY0WTb3fGGqo2ao0f5cms'
-  //       }
-  //     })
-  //     .then((response) => {
-  //       console.log('from client', new Date());
-  //       console.log(response);
-  //       setProkers(response.data.proker);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     })
-  //     .finally(() => {
-  //       setSpinner(false);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   // const tokenAccess = sessionStorage.getItem('access_token');
-  //   // setToken(tokenAccess);
-  //   getDataProker();
-  //   // getDivisi();
-  // }, []);
 
   const tabs = [
     {

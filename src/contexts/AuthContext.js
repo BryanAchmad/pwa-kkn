@@ -3,31 +3,56 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 // import axios from 'src/api/axios';
 // import axios from 'axios';
 // import { Redirect } from 'react-router-dom';
-import { isAuthenticated } from 'src/api/auth';
-import LoginPage from 'src/content/auth/Login';
+// import { isAuthenticated } from 'src/api/auth';
+// import LoginPage from 'src/content/auth/Login';
 // import axios from 'src/api/axios';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState();
-    // const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [currentUser, setCurrentUser] = useState();
+    const [authenticated, setAuthenticated] = useState(false);
+    const checkToken = localStorage.getItem('token');
+    console.log("token check", checkToken)
 
     useEffect(() => {
-        const checkLoggedIn = async () => {
-            let currentUser = isAuthenticated();
-            if (currentUser === null) {
-                localStorage.setItem('user', '');
-                currentUser = '';
-            }
+        // const checkAuth = () => {
+        //     if(checkToken){
+        //         setAuthenticated(true);
+        //     } else {
+        //         setAuthenticated(false);
+        //     }
+        // }
 
-            setUser(currentUser);
-        };
-
-        checkLoggedIn();
+        // checkAuth();
     }, []);
+    // useEffect(() => {
+    //     const checkLoggedIn = async () => {
+    //         let currentUser = isAuthenticated();
+    //         if (currentUser === null) {
+    //             localStorage.setItem('user', '');
+    //             currentUser = '';
+    //         }
 
-    console.log('userContext', user);
+    //         setUser(currentUser);
+    //     };
+
+    //     checkLoggedIn();
+    // }, []);
+
+    const login = (data) => {
+        localStorage.setItem('token', JSON.stringify(data?.data?.access_token));
+        setCurrentUser(data?.data?._id);
+        setAuthenticated(true);
+    };
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        setCurrentUser('');
+        setAuthenticated(false);
+    };
+
+    // console.log('userContext', user);
 
     // const login = (data) => {
     //     console.log(data);
@@ -92,8 +117,8 @@ const AuthProvider = ({ children }) => {
     // };
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated}}>
-            {user?.access_token ? children : <LoginPage/>}
+        <AuthContext.Provider value={{ currentUser, login, logout, authenticated }}>
+            {children}
         </AuthContext.Provider>
     );
 };

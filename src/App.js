@@ -1,5 +1,6 @@
 import { useRoutes } from 'react-router-dom';
-import { Navigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 // import router from 'src/router';
 // import PropTypes from 'prop-types';
@@ -15,7 +16,10 @@ import {
     // Typography
 } from '@mui/material';
 import ThemeProvider from './theme/ThemeProvider';
+// import { isAuthenticated } from 'src/api/auth';
 import { useAuthentication } from 'src/contexts/AuthContext';
+// import { useConnection } from './contexts/ConnectionContext';
+// import { ContentCopy } from '@mui/icons-material';
 // import Router from './router/routes';
 // import { useRoutes } from 'react-router';
 // import { AuthProvider } from './contexts/AuthProvider';
@@ -25,6 +29,7 @@ import { useAuthentication } from 'src/contexts/AuthContext';
 // import { useState } from 'react';
 // import { useEffect, useState } from 'react';
 // import { Suspense, lazy } from 'react';
+import { useConnection } from 'src/contexts/ConnectionContext';
 
 // import SuspenseLoader from 'src/components/SuspenseLoader';
 
@@ -69,23 +74,26 @@ import { useAuthentication } from 'src/contexts/AuthContext';
 // };
 
 function App() {
+    const { isConnected } = useConnection();
     const useAuthRoutes = (routes) => {
-        const { isAuthenticated } = useAuthentication();
-        console.log('auth', isAuthenticated);
+        const { authenticated } = useAuthentication();
+        console.log('auth', authenticated);
         // const Navigate = useNavigate();
         // const isAuth = isAuthenticated; /* your authentication logic here */
 
         return useRoutes(
             routes.map((route) => {
                 console.log('route', route.path);
-                if (route.private) {
+                if (route.private && !authenticated) {
                     return {
                         ...route,
-                        element: isAuthenticated ? (
-                            route.element
-                        ) : (
-                            <Navigate to="/login" replace />
-                        )
+                        element: <Navigate to="/login" replace={true} />,
+                        // ...route,
+                        // element: authenticated ? (
+                        //     route.element
+                        // ) : (
+                        //     <Navigate to="/login" replace />
+                        // )
                     };
                 }
                 return route;
@@ -94,7 +102,13 @@ function App() {
     };
     // const content = useRoutes(router);
     const element = useAuthRoutes(router);
-    console.log(element);
+
+    const notify = () => {
+        toast('you are offline', {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    };
+    // console.log(element);
     // const [status, setStatus] = useState(false);
 
     // const setIsLoaded = (stat) => {
@@ -158,6 +172,13 @@ function App() {
             <ThemeProvider>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <CssBaseline />
+                    {!isConnected ?? (
+                        <>
+                            
+                            <ToastContainer autoClose={false} />
+                        </>
+                    )}
+                    {/* {content} */}
                     {element}
                     {/* <Router /> */}
                 </LocalizationProvider>

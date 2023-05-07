@@ -8,19 +8,22 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 import { AuthProvider } from 'src/contexts/AuthContext';
 import { ApiProvider } from './contexts/ApiContext';
+import { ConnectionProvider } from 'src/contexts/ConnectionContext';
 // import { RestProvider } from './contexts/RestContext';
 
 ReactDOM.render(
     <HelmetProvider>
         <SidebarProvider>
             <BrowserRouter>
-                <AuthProvider>
-                    {/* <RestProvider> */}
-                    <ApiProvider>
-                        <App />
-                    </ApiProvider>
-                    {/* </RestProvider> */}
-                </AuthProvider>
+                <ConnectionProvider>
+                    <AuthProvider>
+                        {/* <RestProvider> */}
+                        <ApiProvider>
+                            <App />
+                        </ApiProvider>
+                        {/* </RestProvider> */}
+                    </AuthProvider>
+                </ConnectionProvider>
             </BrowserRouter>
         </SidebarProvider>
     </HelmetProvider>,

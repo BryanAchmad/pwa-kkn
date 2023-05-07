@@ -11,21 +11,22 @@ import {
     IconButton
 } from '@mui/material';
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
-// import AuthContext from 'src/contexts/AuthProvider';
-// import { useNavigate } from 'react-router';
+import {useAuthentication} from 'src/contexts/AuthContext';
+import { useNavigate } from 'react-router';
 // import { login } from 'src/api/auth';
 // import { Navigate } from 'react-router';
 // import { useApi } from 'src/contexts/ApiContext';
-import { login } from 'src/api/auth';
+// import { login } from 'src/api/auth';
+import axios from 'src/api/axios';
 // import { useNavigate } from 'react-router-dom';
 
 // const LOGIN_URL = '/login';
 
 const index = () => {
     console.log('check page login');
-    // const { login } = useAuthentication();
+    const { login } = useAuthentication();
     // const { setAuth } = useContext(AuthContext);
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [credentials, setCrendentials] = useState({
         nim: '',
@@ -49,11 +50,23 @@ const index = () => {
         });
     };
 
-    const handleSubmit = async () => {
-        // e.preventDefault();
+    const handleSubmit = async (e) => {
+        console.log(credentials);
+        e.preventDefault();
         // const { handleLogin } = await login(credentials);
         try {
-            await login(credentials);
+            const response = await axios.post('/login', credentials);
+            console.log('response', response);
+            if (response.status === 200) {
+                await login(response.data);
+                navigate('/', { replace: true });
+            } else {
+                window.alert("salah pic and nim")
+            }
+            // const response = await login(credentials);
+            // if(response.status === 200) {
+            //     navigate('/', { replace: true });
+            // }
             // navigate("/");
             // < to="/" replace={true} Navigate/>;
         } catch (error) {
@@ -185,7 +198,6 @@ const index = () => {
                             </Grid>
                             <Grid item>
                                 <Button
-                                    type="submit"
                                     fullWidth
                                     variant="contained"
                                     onClick={handleSubmit}
