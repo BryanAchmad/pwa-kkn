@@ -87,7 +87,7 @@ function App() {
                 if (route.private && !authenticated) {
                     return {
                         ...route,
-                        element: <Navigate to="/login" replace={true} />,
+                        element: <Navigate to="/login" replace />,
                         // ...route,
                         // element: authenticated ? (
                         //     route.element
