@@ -29,7 +29,7 @@ import { useAuthentication } from 'src/contexts/AuthContext';
 // import { useState } from 'react';
 // import { useEffect, useState } from 'react';
 // import { Suspense, lazy } from 'react';
-import { useConnection } from 'src/contexts/ConnectionContext';
+// import { useConnection } from 'src/contexts/ConnectionContext';
 
 // import SuspenseLoader from 'src/components/SuspenseLoader';
 
@@ -74,7 +74,7 @@ import { useConnection } from 'src/contexts/ConnectionContext';
 // };
 
 function App() {
-    const { isConnected } = useConnection();
+    // const { isConnected } = useConnection();
     const useAuthRoutes = (routes) => {
         const { authenticated } = useAuthentication();
         console.log('auth', authenticated);
