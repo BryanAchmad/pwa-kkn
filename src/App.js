@@ -1,6 +1,6 @@
 import { useRoutes } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
 
 // import router from 'src/router';
 // import PropTypes from 'prop-types';
@@ -103,11 +103,11 @@ function App() {
     // const content = useRoutes(router);
     const element = useAuthRoutes(router);
 
-    const notify = () => {
-        toast('you are offline', {
-            position: toast.POSITION.TOP_RIGHT
-        });
-    };
+    // const notify = () => {
+    //     toast('you are offline', {
+    //         position: toast.POSITION.TOP_RIGHT
+    //     });
+    // };
     // console.log(element);
     // const [status, setStatus] = useState(false);
 
@@ -172,12 +172,12 @@ function App() {
             <ThemeProvider>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <CssBaseline />
-                    {!isConnected ?? (
+                    {/* {!isConnected ?? (
                         <>
                             
                             <ToastContainer autoClose={false} />
                         </>
-                    )}
+                    )} */}
                     {/* {content} */}
                     {element}
                     {/* <Router /> */}

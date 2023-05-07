@@ -50,11 +50,11 @@ const SidebarLayout = () => {
     const theme = useTheme();
     const { isLoading } = useAPI();
     console.log('from layout', isLoading);
-    const notify = () => {
-        toast.warn('You are now offline, please check your connection', {
-            position: toast.POSITION.TOP_RIGHT
-        });
-    };
+    // const notify = () => {
+    //     toast.warn('You are now offline, please check your connection', {
+    //         position: toast.POSITION.TOP_RIGHT
+    //     });
+    // };
     // console.log('from layout', prokers);
 
     return (

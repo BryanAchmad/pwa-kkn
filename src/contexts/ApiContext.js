@@ -73,7 +73,7 @@ export const ApiProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (prevAuthRef.current != authenticated) {
+        if (prevAuthRef.current !== authenticated) {
             fetchData();
         }
 
