@@ -83,7 +83,7 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin.includes('kkn-umm.vercel.app'),
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: 'apiData',
     plugins: [
       new ExpirationPlugin({
@@ -101,6 +101,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  console.log("masok sini ya");
+
   const bgSyncLogic = async () => {
     try {
       const response = await fetch(event.request.clone());
@@ -112,6 +114,18 @@ self.addEventListener('fetch', (event) => {
   };
 
   event.respondWith(bgSyncLogic());
+});
+
+self.addEventListener('backgroundfetchsuccess', event => {
+  // Broadcast a message to all clients that a queued request has been retried successfully
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage({
+        type: 'background-sync-success',
+        requestUrl: event.registration.options.src
+      });
+    });
+  });
 });
 // registerRoute(
 //   ({ url }) => url.pathname === '/proker/',

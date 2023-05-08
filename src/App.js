@@ -18,6 +18,7 @@ import {
 import ThemeProvider from './theme/ThemeProvider';
 // import { isAuthenticated } from 'src/api/auth';
 import { useAuthentication } from 'src/contexts/AuthContext';
+import { useEffect } from 'react';
 // import { useConnection } from './contexts/ConnectionContext';
 // import { ContentCopy } from '@mui/icons-material';
 // import Router from './router/routes';
@@ -83,17 +84,10 @@ function App() {
 
         return useRoutes(
             routes.map((route) => {
-                console.log('route', route.path);
                 if (route.private && !authenticated) {
                     return {
                         ...route,
-                        element: <Navigate to="/login" replace />,
-                        // ...route,
-                        // element: authenticated ? (
-                        //     route.element
-                        // ) : (
-                        //     <Navigate to="/login" replace />
-                        // )
+                        element: <Navigate to="/login" replace />
                     };
                 }
                 return route;
@@ -103,66 +97,18 @@ function App() {
     // const content = useRoutes(router);
     const element = useAuthRoutes(router);
 
-    // const notify = () => {
-    //     toast('you are offline', {
-    //         position: toast.POSITION.TOP_RIGHT
-    //     });
-    // };
-    // console.log(element);
-    // const [status, setStatus] = useState(false);
+    useEffect(() => {
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            if (event.data.type === 'background-sync-success') {
+                console.log(
+                    'Background sync request sent successfully:',
+                    event.data.requestUrl
+                );
+                // Provide feedback to the user here
+            }
+        });
+    });
 
-    // const setIsLoaded = (stat) => {
-    //   setStatus(stat);
-    // };
-
-    // const isLoaded = () => {
-    //   return status;
-    // };
-
-    // if (!status) return
-    // const [loading, setLoading] = useState(false);
-    // const { proker, prokers, fetching } = useProkerData();
-    // const { prokers, divisi, mediaPub, user } = useProkerData(setIsLoaded());
-    // console.log('from app', prokers);
-    // const content = useRoutes(router);
-
-    // const setIsLoaded = (value) => {
-    //   setIsFetching(value);
-    // };
-
-    // const isLoaded = () => {
-    //   return isFetching;
-    // };
-
-    // const handleStatus = () => {
-    //   if (proker === undefined && prokers === undefined) {
-    //     setLoading(true);
-    //   } else {
-    //     setLoading(false);
-    //   }
-    // };
-
-    // if (!isLoaded) return <LoadingScreen />;
-
-    // const getToken = () => {
-    //   const tokenString = sessionStorage.getItem('access_token');
-    //   const userToken = JSON.parse(tokenString);
-    //   console.log(userToken);
-    //   return userToken;
-    // };
-
-    // const setToken = (userToken) => {
-    //   sessionStorage.setItem('access_token', JSON.stringify(userToken));
-    // };
-    // const [token, setToken] = useState();
-    // const token = getToken();
-
-    // if (!token) return <LoginPage setToken={setToken} />;
-    // const { isLoading } = useAPI();
-
-    // if (isLoading) {
-    //   return <LoadingScreen />;
-    // }
 
     return (
         <>
