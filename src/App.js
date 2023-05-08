@@ -77,18 +77,20 @@ import { useEffect } from 'react';
 function App() {
     // const { isConnected } = useConnection();
     const useAuthRoutes = (routes) => {
+        // const navigate = useNavigate();
+
         const { authenticated } = useAuthentication();
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem('token');
         console.log('auth', authenticated);
         // const Navigate = useNavigate();
         // const isAuth = isAuthenticated; /* your authentication logic here */
 
         return useRoutes(
             routes.map((route) => {
-                if (route.private && !authenticated && !token) {
+                if (route.private && !authenticated) {
                     return {
                         ...route,
-                        element: <Navigate to="/login" replace />
+                        element: <Navigate to="/login" replace/>
                     };
                 }
                 return route;
@@ -109,7 +111,6 @@ function App() {
             }
         });
     });
-
 
     return (
         <>

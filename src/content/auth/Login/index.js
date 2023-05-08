@@ -1,5 +1,5 @@
 // import axios from 'src/api/axios';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import {
     Button,
     Container,
@@ -13,6 +13,7 @@ import {
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
 import {useAuthentication} from 'src/contexts/AuthContext';
 import { useNavigate } from 'react-router';
+// import {useAPI} from 'src/contexts/ApiContext'
 // import { login } from 'src/api/auth';
 // import { Navigate } from 'react-router';
 // import { useApi } from 'src/contexts/ApiContext';
@@ -27,6 +28,7 @@ const index = () => {
     const { login } = useAuthentication();
     // const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
+    // const {addNewData} = useAPI();
 
     const [credentials, setCrendentials] = useState({
         nim: '',
@@ -109,13 +111,6 @@ const index = () => {
     //     })
     //     .catch((e) => console.log(e));
     // };
-
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if(token) {
-            navigate("/")
-        }
-    }, [navigate])
 
     return (
         <Container maxWidth="sm">
