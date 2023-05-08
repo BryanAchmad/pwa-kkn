@@ -78,13 +78,14 @@ function App() {
     // const { isConnected } = useConnection();
     const useAuthRoutes = (routes) => {
         const { authenticated } = useAuthentication();
+        const token = localStorage.getItem("token");
         console.log('auth', authenticated);
         // const Navigate = useNavigate();
         // const isAuth = isAuthenticated; /* your authentication logic here */
 
         return useRoutes(
             routes.map((route) => {
-                if (route.private && !authenticated) {
+                if (route.private && !authenticated && !token) {
                     return {
                         ...route,
                         element: <Navigate to="/login" replace />

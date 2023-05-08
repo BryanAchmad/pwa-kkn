@@ -1,5 +1,5 @@
 // import axios from 'src/api/axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Container,
@@ -61,7 +61,7 @@ const index = () => {
                 await login(response.data);
                 navigate('/', { replace: true });
             } else {
-                window.alert("salah pic and nim")
+                console.log("login salah")
             }
             // const response = await login(credentials);
             // if(response.status === 200) {
@@ -109,6 +109,13 @@ const index = () => {
     //     })
     //     .catch((e) => console.log(e));
     // };
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(token) {
+            navigate("/")
+        }
+    }, [navigate])
 
     return (
         <Container maxWidth="sm">
