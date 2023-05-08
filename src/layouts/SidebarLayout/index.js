@@ -3,9 +3,9 @@ import {
     alpha,
     lighten,
     useTheme
-    // Typography
+    // Typography,
     // CircularProgress,
-    // Backdrop,
+    // Backdrop
     // Typography
 } from '@mui/material';
 import { Outlet } from 'react-router-dom';
@@ -59,31 +59,30 @@ const SidebarLayout = () => {
 
     return (
         <>
-            
             {/* <Backdrop
-        open={isLoading}
-        sx={{
-          color: '#fff',
-          zIndex: (theme) => theme.zIndex.drawer + 100
-        }}
-      >
-        <Box
-          sx={{
-            position: 'fixed',
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%'
-          }}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <CircularProgress size={64} disableShrink thickness={3} />
-          <Typography>Please Wait 🔥</Typography>
-        </Box>
-      </Backdrop> */}
+                open={isLoading}
+                sx={{
+                    color: '#fff',
+                    zIndex: (theme) => theme.zIndex.drawer + 100
+                }}
+            >
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        height: '100%'
+                    }}
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <CircularProgress size={64} disableShrink thickness={3} />
+                    <Typography>Please Wait 🔥</Typography>
+                </Box>
+            </Backdrop> */}
 
             <Box
                 sx={{

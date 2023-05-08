@@ -76,6 +76,7 @@ import { useEffect } from 'react';
 
 function App() {
     // const { isConnected } = useConnection();
+    // const { addNewData } = useAPI();
     const useAuthRoutes = (routes) => {
         // const navigate = useNavigate();
 
@@ -90,7 +91,7 @@ function App() {
                 if (route.private && !authenticated) {
                     return {
                         ...route,
-                        element: <Navigate to="/login" replace/>
+                        element: <Navigate to="/login" replace />
                     };
                 }
                 return route;

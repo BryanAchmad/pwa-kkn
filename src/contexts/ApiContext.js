@@ -13,12 +13,10 @@ const ApiContext = createContext();
 // };
 
 export const ApiProvider = ({ children }) => {
-    // const { isConnected } = useConnection();
-    // const prevConnectedStatus = useRef(isConnected);
-    // const authCheck = isAuthenticated();
     const { authenticated, currentUser, currentKelompok } = useAuthentication();
     // const datajson = JSON.stringify(currentUser);
-    console.log("user", currentUser);
+    console.log('user', currentUser);
+    console.log('kelompok', currentKelompok);
     // console.log("_id", datajson);
     const prevAuthRef = useRef(authenticated);
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,8 +31,10 @@ export const ApiProvider = ({ children }) => {
     const id = '63734f0c41bfdb7ca8fbe819';
     // const kelompok = '10';
     // const userId = '63734e7741bfdb7ca8fbe817';
+    const kel = localStorage.getItem("kel");
+    const mhs = JSON.parse(localStorage.getItem("mhs"));
 
-
+    // console.log(current)
     const fetchData = async () => {
         const token = localStorage.getItem('token');
         if (token && authenticated) {
@@ -46,21 +46,9 @@ export const ApiProvider = ({ children }) => {
                 await Promise.all([
                     axios.get(`/proker/${id}`),
                     axios.get(`/divisi`),
-                    axios.get(`/media/${currentKelompok}`),
-                    axios.get(`/mahasiswa/details/${currentUser}`)
+                    axios.get(`/media/${kel}`),
+                    axios.get(`/mahasiswa/details/${mhs}`)
                 ]);
-            // const result = (
-            //   await Promise.all([
-            //     getProkerReq(id),
-            //     axios.get(`/divisi`),
-            //     axios.get(`/media/${kelompok}`),
-            //     axios.get(`/mahasiswa/details/${userId}`)
-            //   ])
-            // ).map((r) => r);
-            // console.log('promise result', result);
-
-            // const [prokerResult, divisiResult, mediaResult, userResult] =
-            //   await Promise.all(result);
 
             console.log('result => ', userResult);
             setProkers(prokerResult);
@@ -86,13 +74,9 @@ export const ApiProvider = ({ children }) => {
         }
     }, [hasNewData]);
 
-    // useEffect(() => {
-    //     if (prevConnectedStatus.current === false && isConnected === true) {
-    //         fetchData();
-    //     }
-
-    //     prevAuthRef.current = isConnected;
-    // }, [isConnected]);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     console.log(prokers);
 
