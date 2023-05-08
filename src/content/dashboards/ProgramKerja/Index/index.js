@@ -90,10 +90,10 @@ function ProgramKerja() {
   let id = '63734f0c41bfdb7ca8fbe819';
 
   const onClick = () => {
-    setLoadingButton(false);
+    // setLoadingButton(false);
     saveProker();
   };
-  
+
   const saveProker = async () => {
     setLoadingButton(true);
     setEnableButton(true);
@@ -102,6 +102,8 @@ function ProgramKerja() {
       const send = await createProkerReq(id, dataProker);
       console.log(send);
       addNewData();
+      setLoadingButton(false);
+      setEnableButton(false);
     } catch (e) {
       console.log(e);
       setLoadingButton(false);

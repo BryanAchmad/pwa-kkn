@@ -11,9 +11,10 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState();
+    const [currentKelompok, setCurrentKelompok] = useState();
     const [authenticated, setAuthenticated] = useState(false);
     const checkToken = localStorage.getItem('token');
-    console.log("token check", checkToken)
+    console.log('token check', checkToken);
 
     useEffect(() => {
         // const checkAuth = () => {
@@ -23,7 +24,6 @@ const AuthProvider = ({ children }) => {
         //         setAuthenticated(false);
         //     }
         // }
-
         // checkAuth();
     }, []);
     // useEffect(() => {
@@ -42,7 +42,8 @@ const AuthProvider = ({ children }) => {
 
     const login = (data) => {
         localStorage.setItem('token', JSON.stringify(data?.data?.access_token));
-        setCurrentUser(data?.data?._id);
+        setCurrentUser(data?.data?.idMahasiswa?._id);
+        setCurrentKelompok(data?.data?.kelompok?.no_kelompok);
         setAuthenticated(true);
     };
 
@@ -117,7 +118,15 @@ const AuthProvider = ({ children }) => {
     // };
 
     return (
-        <AuthContext.Provider value={{ currentUser, login, logout, authenticated }}>
+        <AuthContext.Provider
+            value={{
+                currentUser,
+                currentKelompok,
+                login,
+                logout,
+                authenticated
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

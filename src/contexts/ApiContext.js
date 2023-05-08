@@ -16,7 +16,7 @@ export const ApiProvider = ({ children }) => {
     // const { isConnected } = useConnection();
     // const prevConnectedStatus = useRef(isConnected);
     // const authCheck = isAuthenticated();
-    const { authenticated, currentUser } = useAuthentication();
+    const { authenticated, currentUser, currentKelompok } = useAuthentication();
     // const datajson = JSON.stringify(currentUser);
     console.log("user", currentUser);
     // console.log("_id", datajson);
@@ -31,8 +31,8 @@ export const ApiProvider = ({ children }) => {
     const [hasNewData, setHasNewData] = useState(false);
 
     const id = '63734f0c41bfdb7ca8fbe819';
-    const kelompok = '10';
-    const userId = currentUser;
+    // const kelompok = '10';
+    // const userId = '63734e7741bfdb7ca8fbe817';
 
 
     const fetchData = async () => {
@@ -46,8 +46,8 @@ export const ApiProvider = ({ children }) => {
                 await Promise.all([
                     axios.get(`/proker/${id}`),
                     axios.get(`/divisi`),
-                    axios.get(`/media/${kelompok}`),
-                    axios.get(`/mahasiswa/details/${userId}`)
+                    axios.get(`/media/${currentKelompok}`),
+                    axios.get(`/mahasiswa/details/${currentUser}`)
                 ]);
             // const result = (
             //   await Promise.all([
