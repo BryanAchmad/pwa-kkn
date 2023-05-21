@@ -12,7 +12,12 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import {
+    NetworkFirst,
+    // NetworkOnly,
+    StaleWhileRevalidate
+} from 'workbox-strategies';
+// import { openDB } from 'idb';
 
 const queue = new Queue('dataQueue');
 
@@ -30,103 +35,207 @@ precacheAndRoute(self.__WB_MANIFEST);
 // const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
 const fileExtensionRegexpLiteral = /[^/?]+\\.[^/]+$/;
 registerRoute(
-  // Return false to exempt requests from being fulfilled by index.html.
-  ({ request, url }) => {
-    // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
-      return false;
-    } // If this is a URL that starts with /_, skip.
+    // Return false to exempt requests from being fulfilled by index.html.
+    ({ request, url }) => {
+        // If this isn't a navigation, skip.
+        if (request.mode !== 'navigate') {
+            return false;
+        } // If this is a URL that starts with /_, skip.
 
-    if (url.pathname.startsWith('/_')) {
-      return false;
-    } // If this looks like a URL for a resource, because it contains // a file extension, skip.
+        if (url.pathname.startsWith('/_')) {
+            return false;
+        } // If this looks like a URL for a resource, because it contains // a file extension, skip.
 
-    if (url.pathname.match(fileExtensionRegexpLiteral)) {
-      return false;
-    } // Return true to signal that we want to use the handler.
+        if (url.pathname.match(fileExtensionRegexpLiteral)) {
+            return false;
+        } // Return true to signal that we want to use the handler.
 
-    return true;
-  },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+        return true;
+    },
+    createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
 );
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
-  // Add in any other file extensions or routing criteria as needed.
-  ({ url }) =>
-    url.origin === self.location.origin &&
-    /\.(jpe?g|png|svg|ico)$/i.test(url.pathname), // Customize this strategy as needed, e.g., by changing to CacheFirst.
-  new StaleWhileRevalidate({
-    cacheName: 'images',
-    plugins: [
-      // Ensure that once this runtime cache reaches a maximum size the
-      // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 })
-    ]
-  })
+    // Add in any other file extensions or routing criteria as needed.
+    ({ url }) =>
+        url.origin === self.location.origin &&
+        /\.(jpe?g|png|svg|ico)$/i.test(url.pathname), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    new StaleWhileRevalidate({
+        cacheName: 'images',
+        plugins: [
+            // Ensure that once this runtime cache reaches a maximum size the
+            // least-recently used images are removed.
+            new ExpirationPlugin({ maxEntries: 50 })
+        ]
+    })
 );
 registerRoute(
-  ({ url }) =>
-    url.origin === 'https://fonts.googleapis.com' ||
-    url.origin === 'https://fonts.gstatic.com',
-  new NetworkFirst({
-    cacheName: 'fonts',
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 365,
-        maxEntries: 30
-      })
-    ]
-  })
+    ({ url }) =>
+        url.origin === 'https://fonts.googleapis.com' ||
+        url.origin === 'https://fonts.gstatic.com',
+    new NetworkFirst({
+        cacheName: 'fonts',
+        plugins: [
+            new ExpirationPlugin({
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+                maxEntries: 30
+            })
+        ]
+    })
 );
 
 registerRoute(
-  ({ url }) => url.origin.includes('kkn-umm.vercel.app'),
-  new NetworkFirst({
-    cacheName: 'apiData',
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 360,
-        maxEntries: 30
-      })
-    ]
-  })
+    ({ url }) => url.origin.includes('kkn-umm.vercel.app'),
+    new NetworkFirst({
+        cacheName: 'apiData',
+        plugins: [
+            new ExpirationPlugin({
+                maxAgeSeconds: 360,
+                maxEntries: 30
+            })
+        ]
+    })
 );
+
+async function handleFailedRequests() {
+    // const queue = new Queue('dataQueue');
+    const requests = await queue.getAll();
+
+    requests.forEach(async (request) => {
+        try {
+            await fetch(request);
+            await queue.delete(request);
+            console.log('Post request sent successfully:', request);
+        } catch (error) {
+            console.error('Failed to send post request:', request, error);
+        }
+    });
+}
 
 self.addEventListener('fetch', (event) => {
-  // Add in your own criteria here to return early if this
-  // isn't a request that should use background sync.
-  if (event.request.method !== 'POST') {
-    return;
-  }
+    if (event.request.method === 'POST') {
+        // const queue = new Queue('dataQueue');
+        const networkPromise = fetch(event.request.clone());
+        event.waitUntil(networkPromise);
 
-  console.log("masok sini ya");
+        const responsePromise = networkPromise
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network request failed');
+                }
+                return response;
+            })
+            .catch((error) => {
+                // Save failed post request to IndexedDB using Queue
+                event.request
+                    .clone()
+                    .text()
+                    .then((body) => {
+                        queue.pushRequest({ request: event.request, body });
+                        console.error(
+                            'Failed post request saved to IndexedDB:',
+                            event.request,
+                            error
+                        );
+                    });
 
-  const bgSyncLogic = async () => {
-    try {
-      const response = await fetch(event.request.clone());
-      return response;
-    } catch (error) {
-      await queue.pushRequest({ request: event.request });
-      return error;
+                const errorResponse = new Response('Network error', {
+                    status: 500,
+                    statusText: 'Internal Server Error',
+                    headers: { 'Content-Type': 'text/plain' }
+                });
+
+                return errorResponse;
+            });
+
+        event.respondWith(responsePromise);
     }
-  };
-
-  event.respondWith(bgSyncLogic());
 });
 
-self.addEventListener('backgroundfetchsuccess', event => {
-  // Broadcast a message to all clients that a queued request has been retried successfully
-  self.clients.matchAll().then(clients => {
-    clients.forEach(client => {
-      client.postMessage({
-        type: 'background-sync-success',
-        requestUrl: event.registration.options.src
-      });
-    });
-  });
+self.addEventListener('activate', (event) => {
+    event.waitUntil(handleFailedRequests());
 });
+
+self.addEventListener('message', (event) => {
+    if (event.data === 'retryFailedRequests') {
+        event.waitUntil(handleFailedRequests());
+    }
+});
+
+self.addEventListener('sync', (event) => {
+    if (event.tag === 'syncFailedRequests') {
+        event.waitUntil(handleFailedRequests());
+    }
+});
+
+// registerRoute(
+//     ({ url }) => url.origin.includes('kkn-umm.vercel.app'),
+//     new NetworkOnly({
+//         plugins: [
+//             new BackgroundSyncPlugin('postRequest', {
+//                 maxRetentionTime: 24 * 60 //try to fetch in 24 hours
+//             })
+//         ]
+//     }),
+//     'POST'
+// );
+
+// const handleSync = () => {
+//     return self.registration.sync
+//         .register('postRequest')
+//         .then((queue) => {
+//             console.log('Sync registered successfully');
+//             return queue.replayRequest();
+//         })
+//         .catch((error) => {
+//             console.log('Sync registration failed: ', error);
+//         });
+// };
+
+// self.addEventListener('online', () => {
+//     console.log('App is now connected to the network');
+// });
+// self.addEventListener('sync', (event) => {
+//     if (event.tag === 'postRequest') {
+//         event.waitUntil(handleSync());
+//     }
+// });
+
+// self.addEventListener('fetch', (event) => {
+//     // Add in your own criteria here to return early if this
+//     // isn't a request that should use background sync.
+//     if (event.request.method !== 'POST') {
+//         return;
+//     }
+
+//     console.log('masok sini ya');
+
+//     const bgSyncLogic = async () => {
+//         try {
+//             const response = await fetch(event.request.clone());
+//             return response;
+//         } catch (error) {
+//             await queue.pushRequest({ request: event.request });
+//             return error;
+//         }
+//     };
+
+//     event.respondWith(bgSyncLogic());
+// });
+
+// self.addEventListener('backgroundfetchsuccess', (event) => {
+//     // Broadcast a message to all clients that a queued request has been retried successfully
+//     self.clients.matchAll().then((clients) => {
+//         clients.forEach((client) => {
+//             client.postMessage({
+//                 type: 'background-sync-success',
+//                 requestUrl: event.registration.options.src
+//             });
+//         });
+//     });
+// });
 // registerRoute(
 //   ({ url }) => url.pathname === '/proker/',
 //   new NetworkOnly({
@@ -142,23 +251,23 @@ self.addEventListener('backgroundfetchsuccess', event => {
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 // Any other custom service worker logic can go here.
 
 self.addEventListener('install', function (event) {
-  console.log('SW install');
+    console.log('SW install');
 
-  const asyncInstall = new Promise(function (resolve) {
-    console.log('waitin instal to finish...');
-    setTimeout(resolve, 5000);
-  });
+    const asyncInstall = new Promise(function (resolve) {
+        console.log('waitin instal to finish...');
+        setTimeout(resolve, 5000);
+    });
 
-  event.waitUntil(asyncInstall);
+    event.waitUntil(asyncInstall);
 });
 self.addEventListener('activate', function () {
-  console.log('SW Activate');
+    console.log('SW Activate');
 });
