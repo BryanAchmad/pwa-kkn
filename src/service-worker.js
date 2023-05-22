@@ -155,6 +155,19 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
+    console.log('SW Activate');
+    event.waitUntil(
+        self.registration.sync
+            .register('syncFailedRequests')
+            .then(() => {
+                console.log(
+                    'Sync task registered with tag: syncFailedRequests'
+                );
+            })
+            .catch((error) => {
+                console.error('Failed to register sync task:', error);
+            })
+    );
     event.waitUntil(handleFailedRequests());
 });
 
@@ -167,6 +180,7 @@ self.addEventListener('message', (event) => {
 self.addEventListener('sync', (event) => {
     if (event.tag === 'syncFailedRequests') {
         event.waitUntil(handleFailedRequests());
+        console.log("data successfully uploaded")
     }
 });
 
@@ -268,6 +282,6 @@ self.addEventListener('install', function (event) {
 
     event.waitUntil(asyncInstall);
 });
-self.addEventListener('activate', function () {
-    console.log('SW Activate');
-});
+// self.addEventListener('activate', function () {
+//     console.log('SW Activate');
+// });
