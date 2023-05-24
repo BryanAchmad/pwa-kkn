@@ -134,8 +134,8 @@ function ProgramKerja() {
         },
         { value: 'Divisi Ekonomi', label: 'Divisi Ekonomi' },
         {
-            value: 'Divisi Pendidikan & keagamaan',
-            label: 'Divisi Pendidikan & keagamaan'
+            value: 'Divisi Pendidikan & Keagamaan',
+            label: 'Divisi Pendidikan & Keagamaan'
         },
         { value: 'Divisi Sosial & Budaya', label: 'Divisi Sosial & Budaya' },
         { value: 'Divisi HUMAS & PDD', label: 'Divisi HUMAS & PDD' },
@@ -154,7 +154,7 @@ function ProgramKerja() {
         (prokers) => prokers.divisi === 'Divisi Ekonomi'
     );
     const pendidikan = prokers?.data?.proker.filter(
-        (prokers) => prokers.divisi === 'Divisi Pendidikan & keagamaan'
+        (prokers) => prokers.divisi === 'Divisi Pendidikan & Keagamaan'
     );
     const pdd = prokers?.data?.proker.filter(
         (prokers) => prokers.divisi === 'Divisi HUMAS & PDD'
@@ -166,7 +166,7 @@ function ProgramKerja() {
         (prokers) => prokers.divisi === 'Divisi Lain-lain'
     );
 
-    console.log('pendidikan', pendidikan);
+    // console.log('pendidikan', pendidikan);
 
     return (
         <>
