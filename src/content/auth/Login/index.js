@@ -1,7 +1,6 @@
 // import axios from 'src/api/axios';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import {
-    Button,
     Container,
     Grid,
     Typography,
@@ -10,40 +9,22 @@ import {
     InputAdornment,
     IconButton
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { Visibility, Person, VisibilityOff, Pin } from '@mui/icons-material';
-import {useAuthentication} from 'src/contexts/AuthContext';
+import { useAuthentication } from 'src/contexts/AuthContext';
 import { useNavigate } from 'react-router';
-// import {useAPI} from 'src/contexts/ApiContext'
-// import { login } from 'src/api/auth';
-// import { Navigate } from 'react-router';
-// import { useApi } from 'src/contexts/ApiContext';
-// import { login } from 'src/api/auth';
 import axios from 'src/api/axios';
-// import { useNavigate } from 'react-router-dom';
-
-// const LOGIN_URL = '/login';
 
 const index = () => {
-    console.log('check page login');
     const { login } = useAuthentication();
-    // const { setAuth } = useContext(AuthContext);
     const navigate = useNavigate();
-    // const {addNewData} = useAPI();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [credentials, setCrendentials] = useState({
         nim: '',
         pic: '',
         showPass: ''
     });
-    //   const [pic, setPic] = useState();
-
-    //   const handleLogin = (event) => {
-    //     setCrendentials({
-    //       ...credentials,
-    //       [event.target.name]: event.target.value
-    //     });
-    //     // console.log(dataProker);
-    //   };
 
     const handleShowPassword = () => {
         setCrendentials({
@@ -55,62 +36,23 @@ const index = () => {
     const handleSubmit = async (e) => {
         console.log(credentials);
         e.preventDefault();
-        // const { handleLogin } = await login(credentials);
+        setIsLoading(true);
         try {
             const response = await axios.post('/login', credentials);
             console.log('response', response);
             if (response.status === 200) {
                 await login(response.data);
+                setIsLoading(false);
                 navigate('/', { replace: true });
             } else {
-                console.log("login salah")
+                console.log('login salah');
+                setIsLoading(false);
             }
-            // const response = await login(credentials);
-            // if(response.status === 200) {
-            //     navigate('/', { replace: true });
-            // }
-            // navigate("/");
-            // < to="/" replace={true} Navigate/>;
         } catch (error) {
             console.error('error', error);
+            setIsLoading(false);
         }
-        // login(credentials)
-        //     .then((response) => {
-        //         console.log('success login', response);
-        //     })
-        //     .catch((e) => {
-        //         console.log(e);
-        //     });
-        // if (success) {
-        //     return <Navigate to="/" replace />
-        // navigate('/', { replace: true });
-        // }
-        // console.log(handleLogin);
-        // console.log('login', response);
     };
-    // const LoginUser = () => {
-    //     console.log(credentials);
-    //     axios.defaults.withCredentials = true;
-    //     // const authContext = useContext(AuthContext);
-    //     // const navigate = useNavigate();
-
-    //     axios
-    //     .post(LOGIN_URL, credentials, {
-    //         headers: { 'content-type': 'application/json' },
-    //         withCredentials: true
-    //     })
-    //     .then((response) => {
-    //         console.log(response);
-    //         const nim = response?.data?.nim;
-    //         const nama = response?.data?.idMahasiswa?.nama;
-    //         const kelompok = response?.data?.kelompok;
-    //         const token = response?.data?.access_token;
-    //         setAuth({ nim, nama, kelompok, token });
-    //         // process.exit();
-    //         // setToken(response.data?.data?.access_token);
-    //     })
-    //     .catch((e) => console.log(e));
-    // };
 
     return (
         <Container maxWidth="sm">
@@ -128,7 +70,7 @@ const index = () => {
                         <Grid container direction="column" spacing={2}>
                             <Grid item>
                                 <Typography variant="h4">
-                                    Login dulu bestie
+                                    Halaman Login
                                 </Typography>
                             </Grid>
                             <Grid item>
@@ -199,13 +141,15 @@ const index = () => {
                                 />
                             </Grid>
                             <Grid item>
-                                <Button
+                                <LoadingButton
                                     fullWidth
                                     variant="contained"
+                                    loadingPosition="center"
+                                    loading={isLoading}
                                     onClick={handleSubmit}
                                 >
                                     Sign In
-                                </Button>
+                                </LoadingButton>
                             </Grid>
                         </Grid>
                     </form>
