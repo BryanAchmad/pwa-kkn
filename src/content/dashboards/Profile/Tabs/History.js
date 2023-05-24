@@ -7,7 +7,7 @@ import {
   Typography,
   Divider
 } from '@mui/material';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 const History = () => {
   return (

@@ -44,17 +44,9 @@ const TabsWrapper = styled(Tabs)(
   `
 );
 
-// const CustomBox = styled(Box)(
-//   () => `
-//         .MuiBox-root {
-//             background-color: #ffffff;
-//         }
-//     `
-// );
-
 const UserAccount = () => {
   const { isLoading } = useAPI();
-  const [currentTab, setCurrentTab] = useState('history');
+  const [currentTab, setCurrentTab] = useState('activity');
   const tabs = [
     { value: 'history', label: 'History Login' },
     { value: 'activity', label: 'Aktivitas Terakhir' }
@@ -63,17 +55,6 @@ const UserAccount = () => {
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
   };
-  // const user1 = {
-  //   savedCards: 7,
-  //   name: 'Catherine Pike',
-  //   coverImg: '/static/images/placeholders/covers/5.jpg',
-  //   avatar: '/static/images/avatars/4.jpg',
-  //   description:
-  //     "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
-  //   jobtitle: 'Web Developer',
-  //   location: 'Barcelona, Spain',
-  //   followers: '465'
-  // };
 
   return (
     <>
@@ -97,16 +78,6 @@ const UserAccount = () => {
                 borderRadius: '16px'
               }}
             >
-              {/* {isLoading ? (
-                <>
-                  <Typography variant="h2" component="h2" gutterBottom>
-                    Selamat Datang Di Sistem Informasi KKN
-                  </Typography>
-                  <Typography variant="subtitle2">
-                    UNIVERSITAS MUHAMMADIYAH MALANG
-                  </Typography>
-                </>
-              ) : ( */}
               <>
                 <Typography variant="h2" component="h2" gutterBottom>
                   {isLoading ? (
@@ -123,7 +94,6 @@ const UserAccount = () => {
                   )}
                 </Typography>
               </>
-              {/* )} */}
             </Box>
           </Grid>
 
