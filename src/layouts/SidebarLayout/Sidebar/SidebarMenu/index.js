@@ -15,7 +15,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -204,7 +204,7 @@ function SidebarMenu() {
                   DPL/TPL
                 </Button>
               </ListItem>
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -214,7 +214,7 @@ function SidebarMenu() {
                 >
                   Lokasi KKN
                 </Button>
-              </ListItem>
+              </ListItem> */}
             </List>
           </SubMenuWrapper>
         </List>
