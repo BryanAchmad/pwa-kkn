@@ -14,7 +14,6 @@ import {
 
 import {
     Cake,
-    Call,
     Lightbulb,
     PermIdentity,
     School
