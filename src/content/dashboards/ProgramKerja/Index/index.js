@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { LoadingButton } from '@mui/lab';
-// import axios from 'axios';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import Typography from '@mui/material/Typography';
 import {
@@ -28,8 +27,6 @@ import {
 
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-// import LoaderComponent from 'src/components/Loader';
-
 import KesehatanTab from './Divisi/KesehatanTab';
 import EkonomiTab from './Divisi/EkonomiTab';
 import PendidikanTab from './Divisi/PendidikanTab';
@@ -38,8 +35,6 @@ import KebudayaanTab from './Divisi/KebudayaanTab';
 import LainlainTab from './Divisi/LainTab';
 import { useAPI } from 'src/contexts/ApiContext';
 import { createProkerReq } from 'src/api/proker';
-// import LoaderComponent from 'src/components/Loader';
-// import { useParams } from 'react-router';
 
 const style = {
     position: 'absolute',
@@ -60,23 +55,7 @@ const TabsWrapper = styled(Tabs)(
 );
 
 function ProgramKerja() {
-    // const param = useParams();
     const { divisi, prokers, isLoading, addNewData } = useAPI();
-    console.log('prokers from useApi', prokers);
-
-    // console.log('prokers', prokers.data.proker);
-
-    // const programKerja = prokers.data.proker;
-    // const proker = data[0];
-    // const dProker = prokers.data.proker;
-    // const [programKerja, setProgramKerja] = useState(prokers);
-
-    // const { data: divisi } = data[1];
-    // console.log('data => ', data);
-    // const [spinner, setSpinner] = useState(false);
-    // const [token, setToken] = useState();
-    // const [divisi, setDivisi] = useState([]);
-    // const [proker, setProker] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [enableButton, setEnableButton] = useState(false);
     const [currentTab, setCurrentTab] = useState('Divisi Ekonomi');
@@ -86,18 +65,15 @@ function ProgramKerja() {
         deskripsi: ''
     });
     const [loadingButton, setLoadingButton] = useState(false);
-    // let id = localStorage.getItem('idKelompok');
     let id = '63734f0c41bfdb7ca8fbe819';
 
     const onClick = () => {
-        // setLoadingButton(false);
         saveProker();
     };
 
     const saveProker = async () => {
         setLoadingButton(true);
         setEnableButton(true);
-        // const id = '63734f0c41bfdb7ca8fbe819';
         try {
             const send = await createProkerReq(id, dataProker);
             console.log(send);
@@ -118,12 +94,10 @@ function ProgramKerja() {
             ...dataProker,
             [event.target.name]: event.target.value
         });
-        // console.log(dataProker);
     };
 
     const handleOpen = () => {
         setOpen(true);
-        // getDivisi();
     };
     const handleClose = () => setOpen(false);
 
@@ -145,7 +119,6 @@ function ProgramKerja() {
     const handleTabsChange = (event, value) => {
         setCurrentTab(value);
     };
-    // const TabMenu = [...new Set(prokers.map((divisi) => divisi.divisi))];
 
     const kesehatan = prokers?.data?.proker.filter(
         (prokers) => prokers.divisi === 'Divisi Kesehatan & Lingkungan'
@@ -165,8 +138,6 @@ function ProgramKerja() {
     const lainlain = prokers?.data?.proker.filter(
         (prokers) => prokers.divisi === 'Divisi Lain-lain'
     );
-
-    // console.log('pendidikan', pendidikan);
 
     return (
         <>
@@ -196,7 +167,6 @@ function ProgramKerja() {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        {/* <Link to="/program-kerja/create"> */}
                         <Button
                             sx={{ mt: { xs: 2, md: 0 } }}
                             variant="contained"
@@ -232,7 +202,6 @@ function ProgramKerja() {
                             aria-describedby="modal-modal-description"
                             xs={2}
                         >
-                            {/* <Box sx={style}> */}
                             <Card sx={style} xs={2}>
                                 <CardHeader
                                     id="modal-modal-title"
@@ -267,9 +236,6 @@ function ProgramKerja() {
                                                             >{`${div.deskripsi}`}</MenuItem>
                                                         )
                                                     )}
-                                                {/* 
-                        <MenuItem value={'test4'}>Twenty</MenuItem>
-                        <MenuItem value={'30'}>Thirty</MenuItem> */}
                                             </Select>
                                         </FormControl>
                                         <TextField
@@ -284,7 +250,6 @@ function ProgramKerja() {
                                         />
                                         <Divider sx={{ marginBottom: '8px' }} />
                                     </FormGroup>
-                                    {/* <ChildModal open={childModal}/> */}
                                 </CardContent>
                                 <CardActions>
                                     <LoadingButton
@@ -304,10 +269,7 @@ function ProgramKerja() {
                                     </Button>
                                 </CardActions>
                             </Card>
-                            {/* </Box> */}
                         </Modal>
-
-                        {/* </Link> */}
                     </Grid>
                 </Grid>
             </PageTitleWrapper>
@@ -336,11 +298,6 @@ function ProgramKerja() {
                                     textColor="primary"
                                     indicatorColor="primary"
                                 >
-                                    {/* {divisi.map((div) => {
-                return (
-                  <Tab key={div._id} label={div.nama} value={div.deskripsi} />
-                  );
-                })} */}
                                     {tabs.map((tab) => (
                                         <Tab
                                             key={tab.value}
