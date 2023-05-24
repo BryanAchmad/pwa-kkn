@@ -1,89 +1,14 @@
-import {
-    Box,
-    alpha,
-    lighten,
-    useTheme
-    // Typography,
-    // CircularProgress,
-    // Backdrop
-    // Typography
-} from '@mui/material';
+import { Box, alpha, lighten, useTheme } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-// import { toast, ToastContainer } from 'react-toastify';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
-import { useAPI } from 'src/contexts/ApiContext';
-// import { useConnection } from 'src/contexts/ConnectionContext';
-
-// const Loading = () => {
-//   console.log('loading');
-//   return (
-//     <Backdrop
-//       // open={open}
-//       sx={{
-//         color: '#fff',
-//         zIndex: (theme) => theme.zIndex.drawer + 100
-//       }}
-//     >
-//       <Box
-//         sx={{
-//           position: 'fixed',
-//           left: 0,
-//           top: 0,
-//           width: '100%',
-//           height: '100%'
-//         }}
-//         display="flex"
-//         flexDirection="column"
-//         alignItems="center"
-//         justifyContent="center"
-//       >
-//         <CircularProgress size={64} disableShrink thickness={3} />
-//         <Typography>Please Wait 🔥</Typography>
-//       </Box>
-//     </Backdrop>
-//   );
-// };
 
 const SidebarLayout = () => {
     const theme = useTheme();
-    const { isLoading } = useAPI();
-    console.log('from layout', isLoading);
-    // const notify = () => {
-    //     toast.warn('You are now offline, please check your connection', {
-    //         position: toast.POSITION.TOP_RIGHT
-    //     });
-    // };
-    // console.log('from layout', prokers);
 
     return (
         <>
-            {/* <Backdrop
-                open={isLoading}
-                sx={{
-                    color: '#fff',
-                    zIndex: (theme) => theme.zIndex.drawer + 100
-                }}
-            >
-                <Box
-                    sx={{
-                        position: 'fixed',
-                        left: 0,
-                        top: 0,
-                        width: '100%',
-                        height: '100%'
-                    }}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <CircularProgress size={64} disableShrink thickness={3} />
-                    <Typography>Please Wait 🔥</Typography>
-                </Box>
-            </Backdrop> */}
-
             <Box
                 sx={{
                     flex: 1,
@@ -127,10 +52,8 @@ const SidebarLayout = () => {
                         }}
                     >
                         <Box display="block">
-                            {/* <Loading open={isLoading} /> */}
                             <Outlet />
                         </Box>
-                        {/* )} */}
                     </Box>
                 </>
             </Box>

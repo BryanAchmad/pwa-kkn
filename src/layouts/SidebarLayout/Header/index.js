@@ -1,16 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 
 import {
-  Box,
-  alpha,
-  lighten,
-  IconButton,
-  Tooltip,
-  styled,
-  useTheme,
-  Typography,
-  Stack
-  // Typography
+    Box,
+    alpha,
+    lighten,
+    IconButton,
+    Tooltip,
+    styled,
+    useTheme,
+    Typography,
+    Stack
 } from '@mui/material';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
@@ -19,7 +18,7 @@ import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Box)(
-  ({ theme }) => `
+    ({ theme }) => `
         height: 100;
         color: ${theme.header.textColor};
         padding: 0;
@@ -38,107 +37,98 @@ const HeaderWrapper = styled(Box)(
 );
 
 function Header() {
-  const [online, setOnline] = useState(window.navigator.onLine);
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const theme = useTheme();
+    const [online, setOnline] = useState(window.navigator.onLine);
+    const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+    const theme = useTheme();
 
-  useEffect(() => {
-    window.addEventListener('offline', () =>
-      setOnline(window.navigator.onLine)
+    useEffect(() => {
+        window.addEventListener('offline', () =>
+            setOnline(window.navigator.onLine)
+        );
+
+        window.addEventListener('online', () =>
+            setOnline(window.navigator.onLine)
+        );
+    });
+
+    return (
+        <>
+            <HeaderWrapper
+                display="flex"
+                alignItems="center"
+                sx={{
+                    boxShadow:
+                        theme.palette.mode === 'dark'
+                            ? `0 1px 0 ${alpha(
+                                  lighten(theme.colors.primary.main, 0.7),
+                                  0.15
+                              )}, 0px 2px 8px -3px rgba(0, 0, 0, 0.2), 0px 5px 22px -4px rgba(0, 0, 0, .1)`
+                            : `0px 2px 8px -3px ${alpha(
+                                  theme.colors.alpha.black[100],
+                                  0.2
+                              )}, 0px 5px 22px -4px ${alpha(
+                                  theme.colors.alpha.black[100],
+                                  0.1
+                              )}`
+                }}
+            >
+                <Stack
+                    direction="column"
+                    width="100%"
+                    sx={{ margin: 0, padding: 0 }}
+                >
+                    {!online ? (
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            sx={{
+                                background: 'red',
+                                color: 'white',
+                                padding: 0,
+                                margin: 0
+                            }}
+                        >
+                            <Typography variant="h5">
+                                Offline mode, you are not connected to a network
+                            </Typography>
+                        </Box>
+                    ) : (
+                        ''
+                    )}
+
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        sx={{ paddingX: 2 }}
+                    >
+                        <HeaderUserbox />
+                        <Box
+                            component="span"
+                            sx={{
+                                ml: 2,
+                                display: { lg: 'none', xs: 'inline-block' }
+                            }}
+                        >
+                            <Tooltip arrow title="Toggle Menu">
+                                <IconButton
+                                    color="primary"
+                                    onClick={toggleSidebar}
+                                >
+                                    {!sidebarToggle ? (
+                                        <MenuTwoToneIcon fontSize="small" />
+                                    ) : (
+                                        <CloseTwoToneIcon fontSize="small" />
+                                    )}
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    </Box>
+                </Stack>
+            </HeaderWrapper>
+        </>
     );
-
-    window.addEventListener('online', () => setOnline(window.navigator.onLine));
-  });
-
-  return (
-    <>
-      {/* <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        alignContent="center"
-      >
-        <Typography variant="h3">Offline</Typography>
-      </Box> */}
-      <HeaderWrapper
-        display="flex"
-        alignItems="center"
-        sx={{
-          boxShadow:
-            theme.palette.mode === 'dark'
-              ? `0 1px 0 ${alpha(
-                  lighten(theme.colors.primary.main, 0.7),
-                  0.15
-                )}, 0px 2px 8px -3px rgba(0, 0, 0, 0.2), 0px 5px 22px -4px rgba(0, 0, 0, .1)`
-              : `0px 2px 8px -3px ${alpha(
-                  theme.colors.alpha.black[100],
-                  0.2
-                )}, 0px 5px 22px -4px ${alpha(
-                  theme.colors.alpha.black[100],
-                  0.1
-                )}`
-        }}
-      >
-        {/* <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
-        spacing={2}
-      >
-        <HeaderMenu />
-      </Stack> */}
-        <Stack direction="column" width="100%" sx={{ margin: 0, padding: 0 }}>
-          {!online ? (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                background: 'green',
-                padding: 0,
-                margin: 0
-              }}
-            >
-              <Typography variant="h5">
-                Offline mode, you are not connected to a network
-              </Typography>
-            </Box>
-          ) : (
-            ''
-          )}
-
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-end"
-            sx={{ paddingX: 2 }}
-          >
-            {/* <HeaderButtons /> */}
-
-            <HeaderUserbox />
-            <Box
-              component="span"
-              sx={{
-                ml: 2,
-                display: { lg: 'none', xs: 'inline-block' }
-              }}
-            >
-              <Tooltip arrow title="Toggle Menu">
-                <IconButton color="primary" onClick={toggleSidebar}>
-                  {!sidebarToggle ? (
-                    <MenuTwoToneIcon fontSize="small" />
-                  ) : (
-                    <CloseTwoToneIcon fontSize="small" />
-                  )}
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </Box>
-        </Stack>
-        {/* </Box> */}
-      </HeaderWrapper>
-    </>
-  );
 }
 
 export default Header;
