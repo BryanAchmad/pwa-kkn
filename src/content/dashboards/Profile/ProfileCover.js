@@ -22,8 +22,6 @@ import { useAPI } from 'src/contexts/ApiContext';
 
 const ProfileCover = () => {
     const { user, isLoading } = useAPI();
-    console.log('user', user);
-    console.log('loading ', isLoading);
 
     return (
         <>
